@@ -22,7 +22,10 @@ body {
     border-radius: 50%;
     display: none;
 }
-
+.rebirth {
+    background-color: blue;
+    color: white;
+}
 button {
     padding: 10px;
     font-size: 16px;

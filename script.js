@@ -7,6 +7,7 @@ let ultimateUpgradeCost = 1111;
 let multiplier = 1.1; // Increases per upgrade
 let isCircleActive = false; 
 let baseMoneyPerClick = 1;
+
 const moneyDisplay = document.getElementById("money");
 const moneyPerClickDisplay = document.getElementById("money-per-click");
 const upgradeBtn = document.getElementById("upgrade-btn");
@@ -25,6 +26,14 @@ let upgradeCount2 = 0;
 let upgradeCount3 = 0;
 let ultimateUpgradeBought = false;
 
+let totalRebirths = 0;
+let rebirthMultiplier = 1;
+let rebirthCost = 1000000;
+
+const rebirthBtn = document.getElementById("rebirth-btn");
+const totalRebirthsElement = document.getElementById("total-rebirths");
+const rebirthMultiplierElement = document.getElementById("rebirth-multiplier");
+
 // Modify the circle click event handler
 circle.addEventListener("click", () => {
     if (isCircleActive) {
@@ -37,7 +46,7 @@ circle.addEventListener("click", () => {
             achievementMultiplier += achievementIncrement;
             // Multiply base money per click by total achievement multiplier
             moneyPerClick = baseMoneyPerClick * achievementMultiplier;
-            alert(`Achievement! 50 clicks milestone reached! Money multiplier increased to ${achievementMultiplier.toFixed(1)}x`);
+            
         }
         
         updateMoney();
@@ -58,7 +67,7 @@ upgradeBtn.addEventListener("click", () => {
         money -= upgradeCost;
         baseMoneyPerClick *= multiplier;
         // Apply both multipliers
-        moneyPerClick = baseMoneyPerClick * achievementMultiplier;
+        moneyPerClick = baseMoneyPerClick * achievementMultiplier* rebirthMultiplier;
         upgradeCost = Math.ceil(upgradeCost * 1.1);
         upgradeCount1++;
         updateMoney();
@@ -72,14 +81,13 @@ upgradeBtn2.addEventListener("click", () => {
         money -= upgradeCost2;
         baseMoneyPerClick += 1;
         // Apply both multipliers
-        moneyPerClick = baseMoneyPerClick * achievementMultiplier;
+        moneyPerClick = baseMoneyPerClick * achievementMultiplier* rebirthMultiplier;
         upgradeCost2 = Math.ceil(upgradeCost2 * 1.2);
         upgradeCount2++;
         updateMoney();
     }
 });
 
-// Add handler for the third upgrade
 // Add handler for the third upgrade
 upgradeBtn3.addEventListener("click", () => {
     if (money >= upgradeCost3) {
@@ -92,6 +100,7 @@ upgradeBtn3.addEventListener("click", () => {
         updateMoney();
     }
 });
+
 // Add handler for the ultimate upgrade
 ultimateUpgradeBtn.addEventListener("click", () => {
     if (money >= ultimateUpgradeCost && !ultimateUpgradeBought) {
@@ -119,6 +128,34 @@ ultimateUpgradeBtn.addEventListener("click", () => {
     }
 });
 
+// Rebirth button handler
+// Rebirth button handler
+// Rebirth button handler
+rebirthBtn.addEventListener("click", () => {
+    if (money >= rebirthCost) {
+        money = 0;
+        totalRebirths++;
+        rebirthMultiplier += 1; // Increase multiplier by 1 for each rebirth (e.g., 1x -> 2x -> 3x)
+        baseMoneyPerClick = 1; // Reset base money per click to 1
+        moneyPerClick = baseMoneyPerClick * achievementMultiplier * rebirthMultiplier; // Apply rebirth multiplier
+        upgradeCost = 10;
+        upgradeCost2 = 100;
+        upgradeCost3 = 1000;
+        ultimateUpgradeCost = 1111;
+        achievementMultiplier = 1;
+        achievementIncrement = 0.1;
+        upgradeCount1 = 0;
+        upgradeCount2 = 0;
+        upgradeCount3 = 0;
+        ultimateUpgradeBought = false;
+        
+
+        rebirthCost *= 2; // Increase rebirth cost for next rebirth
+
+        updateMoney(); // Update the UI
+    }
+});
+
 // Format large numbers (e.g., 1K, 1M, 1B)
 function formatNumber(num) {
     let units = ["", "K", "M", "B", "T", "Qa", "Qi"];
@@ -140,6 +177,9 @@ function updateMoney() {
     ultimateUpgradeBtn.textContent = ultimateUpgradeBought ? "Ultimate Upgrade: Autoclick/s  [Bought: MAX]" : `Ultimate Upgrade: Autoclick/s (Cost: ${formatNumber(ultimateUpgradeCost)}) [Bought: 0]`;
     document.getElementById("click-count").textContent = clickCount;
     document.getElementById("achievement-multiplier").textContent = achievementMultiplier.toFixed(1);
+    totalRebirthsElement.textContent = totalRebirths;
+    rebirthMultiplierElement.textContent = rebirthMultiplier ; // Display rebirth multiplier
+    rebirthBtn.textContent = `Rebirth (Cost: ${formatNumber(rebirthCost)})`;
 }
 
 // Move the circle to a random position within the game container
