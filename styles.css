@@ -1,0 +1,50 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
+}
+
+#game-container {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    background-color: white;
+    border: 2px solid black;
+    margin: 20px auto;
+    position: relative;
+}
+
+#circle {
+    position: absolute;
+    width: 20px; /* Set a fixed width for the circle */
+    height: 20px; /* Set a fixed height for the circle */
+    background-color: red;
+    border-radius: 50%;
+    display: none;
+}
+
+button {
+    padding: 10px;
+    font-size: 16px;
+    margin: 10px;
+}
+button {
+    padding: 10px;
+    font-size: 16px;
+    margin: 10px;
+}
+
+.upgrade-2 {
+    background-color: green;
+    color: white;
+}
+
+.upgrade-3 {
+    background-color: purple;
+    color: white;
+}
+.ultimate-upgrade {
+    background-color: gold;
+    color: black;
+    font-weight: bold;
+}

@@ -1,1 +1,25 @@
-helo worl
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clicking Circle Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Clicking Circle Game</h1>
+    <p>Money: <span id="money">0</span></p>
+    <button id="upgrade-btn">Upgrade Money Gain (Cost: 10)</button>
+    <button id="upgrade-btn-2" class="upgrade-2">Upgrade Money Gain by +1 (Cost: 1000)</button>
+    <button id="upgrade-btn-3" class="upgrade-3">Upgrade Achievement Multiplier (Cost: 10000)</button>
+    <button id="ultimate-upgrade-btn" class="ultimate-upgrade">Ultimate Upgrade: Autoclick/s (Cost: 100K) [Bought: 0]</button>
+    <p>Current Money Per Click: <span id="money-per-click">1</span></p>
+    <p>Total Clicks: <span id="click-count">0</span></p>
+    <p>Achievement Multiplier per 50 clicks: <span id="achievement-multiplier">1.0</span>x</p>
+    <div id="game-container">
+        <div id="circle"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
