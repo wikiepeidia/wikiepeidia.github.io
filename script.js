@@ -80,17 +80,18 @@ upgradeBtn2.addEventListener("click", () => {
 });
 
 // Add handler for the third upgrade
+// Add handler for the third upgrade
 upgradeBtn3.addEventListener("click", () => {
     if (money >= upgradeCost3) {
         upgradeSound.play();
         money -= upgradeCost3;
         achievementIncrement += 0.1;
+        achievementMultiplier += 0.1; // Increase the achievement multiplier by 0.1x
         upgradeCost3 = Math.ceil(upgradeCost3 * 1.3456);
         upgradeCount3++;
         updateMoney();
     }
 });
-
 // Add handler for the ultimate upgrade
 ultimateUpgradeBtn.addEventListener("click", () => {
     if (money >= ultimateUpgradeCost && !ultimateUpgradeBought) {
