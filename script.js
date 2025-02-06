@@ -1,5 +1,5 @@
 let money = 0;
-let moneyPerClick = 1;
+let moneyPerClick = 444441;
 let upgradeCost = 10;
 let upgradeCost2 = 100;
 let upgradeCost3 = 1000;
@@ -65,7 +65,7 @@ upgradeBtn.addEventListener("click", () => {
     if (money >= upgradeCost) {
         upgradeSound.play();
         money -= upgradeCost;
-        baseMoneyPerClick *= multiplier;
+        baseMoneyPerClick += 0.1;
         // Apply both multipliers
         moneyPerClick = baseMoneyPerClick * achievementMultiplier* rebirthMultiplier;
         upgradeCost = Math.ceil(upgradeCost * 1.1);
@@ -95,6 +95,7 @@ upgradeBtn3.addEventListener("click", () => {
         money -= upgradeCost3;
         achievementIncrement += 0.1;
         achievementMultiplier += 0.1; // Increase the achievement multiplier by 0.1x
+        moneyPerClick = baseMoneyPerClick * achievementMultiplier; // Apply the achievement multiplier
         upgradeCost3 = Math.ceil(upgradeCost3 * 1.3456);
         upgradeCount3++;
         updateMoney();
@@ -112,7 +113,11 @@ ultimateUpgradeBtn.addEventListener("click", () => {
         ultimateUpgradeBtn.style.filter = "blur(2px)";
         circle.style.display = "none";
         clearInterval(circleSpawnInterval);
-        setInterval(() => {
+        const autoClickInterval = setInterval(() => {
+            if (!ultimateUpgradeBought) {
+                clearInterval(autoClickInterval);
+                return;
+            }
             money += moneyPerClick;
             clickCount++; // Increment click count
             // Achievement check for every 50 clicks
@@ -120,7 +125,6 @@ ultimateUpgradeBtn.addEventListener("click", () => {
                 achievementMultiplier += achievementIncrement;
                 // Multiply base money per click by total achievement multiplier
                 moneyPerClick = baseMoneyPerClick * achievementMultiplier;
-                alert(`Achievement! 50 clicks milestone reached! Money multiplier increased to ${achievementMultiplier.toFixed(1)}x`);
             }
             updateMoney();
         }, 1000);
@@ -128,8 +132,6 @@ ultimateUpgradeBtn.addEventListener("click", () => {
     }
 });
 
-// Rebirth button handler
-// Rebirth button handler
 // Rebirth button handler
 rebirthBtn.addEventListener("click", () => {
     if (money >= rebirthCost) {
@@ -148,11 +150,15 @@ rebirthBtn.addEventListener("click", () => {
         upgradeCount2 = 0;
         upgradeCount3 = 0;
         ultimateUpgradeBought = false;
+        ultimateUpgradeBtn.disabled = false;
+        ultimateUpgradeBtn.style.filter = "none";
+        ultimateUpgradeBtn.textContent = `Ultimate Upgrade: Autoclick/s (Cost: ${formatNumber(ultimateUpgradeCost)}) [Bought: 0]`;
         
-
         rebirthCost *= 2; // Increase rebirth cost for next rebirth
 
         updateMoney(); // Update the UI
+        clearInterval(autoClickInterval); // Stop autoclick
+        setInterval(spawnCircle, 1000); // Restart circle spawning
     }
 });
 
