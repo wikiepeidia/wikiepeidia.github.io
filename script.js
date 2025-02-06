@@ -1,5 +1,5 @@
 let money = 0;
-let moneyPerClick = 444441;
+let moneyPerClick = 1;
 let upgradeCost = 10;
 let upgradeCost2 = 100;
 let upgradeCost3 = 1000;
