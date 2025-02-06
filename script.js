@@ -25,6 +25,7 @@ let upgradeCount1 = 0;
 let upgradeCount2 = 0;
 let upgradeCount3 = 0;
 let ultimateUpgradeBought = false;
+let autoClickInterval; // Define autoClickInterval outside the rebirth button handler
 
 let totalRebirths = 0;
 let rebirthMultiplier = 1;
@@ -133,8 +134,11 @@ ultimateUpgradeBtn.addEventListener("click", () => {
 });
 
 // Rebirth button handler
+// Rebirth button handler
+// Rebirth button handler
 rebirthBtn.addEventListener("click", () => {
     if (money >= rebirthCost) {
+        
         money = 0;
         totalRebirths++;
         rebirthMultiplier += 1; // Increase multiplier by 1 for each rebirth (e.g., 1x -> 2x -> 3x)
@@ -155,11 +159,21 @@ rebirthBtn.addEventListener("click", () => {
         ultimateUpgradeBtn.textContent = `Ultimate Upgrade: Autoclick/s (Cost: ${formatNumber(ultimateUpgradeCost)}) [Bought: 0]`;
         
         rebirthCost *= 2; // Increase rebirth cost for next rebirth
+        updateMoney();
+        // Reset circle spawning logic
+        isCircleActive = false; // Ensure the circle can spawn again
+        circle.style.display = "none"; // Hide the circle initially
+        clearInterval(circleSpawnInterval); // Clear the existing circle spawn interval
+        circleSpawnInterval = setInterval(spawnCircle, 1000); // Restart circle spawning
 
-        updateMoney(); // Update the UI
+        if (autoClickInterval) {
+            clearInterval(autoClickInterval); // Stop autoclick
+        }
         clearInterval(autoClickInterval); // Stop autoclick
-        setInterval(spawnCircle, 1000); // Restart circle spawning
+        
     }
+
+    
 });
 
 // Format large numbers (e.g., 1K, 1M, 1B)

@@ -3,7 +3,11 @@ body {
     text-align: center;
     background-color: #f4f4f4;
 }
-
+ul{
+    list-style-position: inside;
+    text-align: center;
+    
+}
 #game-container {
     position: relative;
     width: 300px;
