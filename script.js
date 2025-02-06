@@ -221,3 +221,4 @@ function spawnCircle() {
 updateMoney();
 const circleSpawnInterval = setInterval(spawnCircle, 1000);
 spawnCircle();
+
