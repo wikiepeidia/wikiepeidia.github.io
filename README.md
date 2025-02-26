@@ -74,3 +74,7 @@ However, it is easy to hack this game and more bugs WOULD appear.
 ## Version
 
 20:30:00 February 6, 2025
+
+# INFINITE MONEY SIMULATOR
+
+a game that completely just need to buy upgrades and money will increase very fast!
