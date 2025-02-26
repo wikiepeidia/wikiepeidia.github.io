@@ -110,8 +110,8 @@
     <p>however it is easy to hack this game and more bug WOULD appear</p>
     <h1>Read more at: <a href="https://github.com/wikiepeidia/wikiepeidia.github.io/blob/main/README.md">README.MD</a></h1>
 
-    <h1>version</h1>
-    <version>20:30:00 febuary 6 2025</version>
+    <h1>version 20:30:00 febuary 26 2025</h1>
+    
     <p id="clock"></p>
 
     <script>
@@ -185,6 +185,31 @@
         window.location.href = targetPage;
     }
 </script>
+<!-- Background Music Controls -->
+<!-- Background Music Toggle -->
+<button id="musicToggle" onclick="toggleMusic()" style="background-color: purple; color: white;">
+    Enable Music? Status: Disabled
+</button>
+
+<audio id="bgMusic" src="audio/bgm.mp3" loop></audio>
+
+<script>
+    let music = document.getElementById('bgMusic');
+    let musicButton = document.getElementById('musicToggle');
+    let isPlaying = false;
+
+    function toggleMusic() {
+        if (isPlaying) {
+            music.pause();
+            musicButton.textContent = "Enable Music? Status: Disabled";
+        } else {
+            music.play();
+            musicButton.textContent = "Enable Music? Status: Enabled";
+        }
+        isPlaying = !isPlaying;
+    }
+</script>
+
 
 </body>
 
