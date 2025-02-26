@@ -6,11 +6,12 @@
     <title>Infinity Money Simulator</title>
     <link rel="stylesheet" href="game2.css">
     <script src="game2.js" defer></script>
-    <link rel="icon" href="https://raw.githubusercontent.com/wikiepeidia/wikiepeidia.github.io/refs/heads/main/photo/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://raw.githubusercontent.com/wikiepeidia/wikiepeidia.github.io/refs/heads/main/HTML/favicon.ico" type="image/x-icon">
 </head>
 <body>
 
     <h1>💰 Infinity Money Simulator BY CHATGPT AND COPILOT 💰</h1>
+    <h2>a much simpler game, easier!</h2>
     <p>Current Money: <span id="money">1000</span> 💵</p>
     <p>Multiplier: x<span id="multiplier">1</span> 🔥</p>
     <p>Earning Rate: <span id="earningRate">1.00 💰 / 1.00s</span></p>  
@@ -20,10 +21,60 @@
     <button id="upgrade2">🚀 +10 Money/sec (Cost: 100💰)</button>
     <button id="upgrade3">💎 x2 Multiplier (Cost: 1000💲)</button>
     <button id="upgrade4">⏳ Reduce Time Interval (Cost: 5000🕒)</button>
+    
 
     <footer>
         <p>Version: <span id="version">10:30:00 febuary 26 2025</span></p>
     </footer>
+    <button onclick="showConfirmation('../index.html')" style="background-color: purple;">Back to Game 1</button>
+
+<!-- Full-Screen Confirmation Overlay -->
+<div id="confirmationOverlay">
+    <p>ARE YOU SURE TO CHANGE GAME? You will lose progress.</p>
+    <button onclick="confirmChange()" style="background-color: blue; color: white;">YES</button>
+    <button onclick="hideConfirmation()" style="background-color: orange; color: white;">NO</button>
+</div>
+
+<style>
+    /* Styling for the full-screen confirmation */
+    #confirmationOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 24px;
+        display: none;
+    }
+    #confirmationOverlay button {
+        margin: 10px;
+        padding: 15px 30px;
+        font-size: 20px;
+    }
+</style>
+
+<script>
+    let targetPage = '';
+
+    function showConfirmation(page) {
+        targetPage = page;
+        document.getElementById('confirmationOverlay').style.display = 'flex';
+    }
+
+    function hideConfirmation() {
+        document.getElementById('confirmationOverlay').style.display = 'none';
+    }
+
+    function confirmChange() {
+        window.location.href = targetPage;
+    }
+</script>
 
 </body>
 </html>

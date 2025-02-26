@@ -78,3 +78,7 @@ However, it is easy to hack this game and more bugs WOULD appear.
 # INFINITE MONEY SIMULATOR
 
 a game that completely just need to buy upgrades and money will increase very fast!
+
+## Comparision to Clicking cicle game
+
+you dont need to click anything, but click the upgrades. multiplier in this game will be much higher. overall it is easier to play

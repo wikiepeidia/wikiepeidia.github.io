@@ -17,7 +17,7 @@
     <button id="upgrade-btn-3" class="upgrade-3">Upgrade Achievement Multiplier (Cost: 10000)</button>
     <button id="ultimate-upgrade-btn" class="ultimate-upgrade">Ultimate Upgrade: Autoclick/s (Cost: 100K) [Bought:0]</button>
     <button id="rebirth-btn" class="rebirth">Rebirth (Cost: 1M)</button>
-    <p>Current Game Session: <span id="session-time">0s</span></p>
+    <p>Current Game Session: <span id="session-time">0y 0m 0w 0d 0h 0m 0s</span></p>
     <p>Total Rebirths: <span id="total-rebirths">0</span></p>
     <p>Rebirth Multiplier: <span id="rebirth-multiplier">1</span>x</p>
     <p>Money: <span id="money">0</span></p>
@@ -136,9 +136,55 @@
         updateClock(); // Run immediately
     </script>
 
-<button onclick="window.location.href='./HTML/game2.html'">
-    Play another game here: <strong>PLAY NOW</strong>
-</button>
+<button onclick="showConfirmation('./HTML/game2.html')">Play another game</button>
+
+<!-- Full-Screen Confirmation Overlay -->
+<div id="confirmationOverlay">
+    <p>ARE YOU SURE TO CHANGE GAME? You will lose progress.</p>
+    <button onclick="confirmChange()">YES</button>
+    <button onclick="hideConfirmation()">NO</button>
+</div>
+
+<style>
+    /* Styling for the full-screen confirmation */
+    #confirmationOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 24px;
+        display: none;
+    }
+    #confirmationOverlay button {
+        margin: 10px;
+        padding: 15px 30px;
+        font-size: 20px;
+    }
+</style>
+
+<script>
+    let targetPage = '';
+
+    function showConfirmation(page) {
+        targetPage = page;
+        document.getElementById('confirmationOverlay').style.display = 'flex';
+    }
+
+    function hideConfirmation() {
+        document.getElementById('confirmationOverlay').style.display = 'none';
+    }
+
+    function confirmChange() {
+        window.location.href = targetPage;
+    }
+</script>
 
 </body>
 
