@@ -34,6 +34,9 @@ let rebirthCost = 1000000;
 const rebirthBtn = document.getElementById("rebirth-btn");
 const totalRebirthsElement = document.getElementById("total-rebirths");
 const rebirthMultiplierElement = document.getElementById("rebirth-multiplier");
+const sessionTimeElement = document.getElementById("session-time");
+
+const startTime = new Date();
 
 // Modify the circle click event handler
 circle.addEventListener("click", () => {
@@ -68,7 +71,7 @@ upgradeBtn.addEventListener("click", () => {
         money -= upgradeCost;
         baseMoneyPerClick += 0.1;
         // Apply both multipliers
-        moneyPerClick = baseMoneyPerClick * achievementMultiplier* rebirthMultiplier;
+        moneyPerClick = baseMoneyPerClick * achievementMultiplier * rebirthMultiplier;
         upgradeCost = Math.ceil(upgradeCost * 1.1);
         upgradeCount1++;
         updateMoney();
@@ -82,7 +85,7 @@ upgradeBtn2.addEventListener("click", () => {
         money -= upgradeCost2;
         baseMoneyPerClick += 1;
         // Apply both multipliers
-        moneyPerClick = baseMoneyPerClick * achievementMultiplier* rebirthMultiplier;
+        moneyPerClick = baseMoneyPerClick * achievementMultiplier * rebirthMultiplier;
         upgradeCost2 = Math.ceil(upgradeCost2 * 1.2);
         upgradeCount2++;
         updateMoney();
@@ -134,8 +137,6 @@ ultimateUpgradeBtn.addEventListener("click", () => {
 });
 
 // Rebirth button handler
-// Rebirth button handler
-// Rebirth button handler
 rebirthBtn.addEventListener("click", () => {
     if (money >= rebirthCost) {
         
@@ -172,13 +173,20 @@ rebirthBtn.addEventListener("click", () => {
         clearInterval(autoClickInterval); // Stop autoclick
         
     }
-
-    
 });
 
 // Format large numbers (e.g., 1K, 1M, 1B)
 function formatNumber(num) {
-    let units = ["", "K", "M", "B", "T", "Qa", "Qi"];
+    let units = [
+        "", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", 
+    "Dc", "UDc", "DDc", "TDc", "QaDc", "QiDc", "SxDc", "SpDc", "OcDc", "NoDc",
+    "Vg", "UVg", "DVg", "TVg", "QaVg", "QiVg", "SxVg", "SpVg", "OcVg", "NoVg", 
+    "Tg", "UTg", "DTg", "TTg", "QaTg", "QiTg", "SxTg", "SpTg", "OcTg", "NoTg", 
+    "Qd", "UQd", "DQd", "TQd", "QaQd", "QiQd", "SxQd", "SpQd", "OcQd", "NoQd",
+    "Qn", "UQn", "DQn", "TQn", "QaQn", "QiQn", "SxQn", "SpQn", "OcQn", "NoQn",
+    "Ce", "UC", "DC", "TC", "QaC", "QiC", "SxC", "SpC", "OcC", "NoC"
+    ];
+    
     let unitIndex = 0;
     while (num >= 1000 && unitIndex < units.length - 1) {
         num /= 1000;
@@ -198,9 +206,27 @@ function updateMoney() {
     document.getElementById("click-count").textContent = clickCount;
     document.getElementById("achievement-multiplier").textContent = achievementMultiplier.toFixed(1);
     totalRebirthsElement.textContent = totalRebirths;
-    rebirthMultiplierElement.textContent = rebirthMultiplier ; // Display rebirth multiplier
+    rebirthMultiplierElement.textContent = rebirthMultiplier; // Display rebirth multiplier
     rebirthBtn.textContent = `Rebirth (Cost: ${formatNumber(rebirthCost)})`;
 }
+
+// Calculate and display session time
+function updateSessionTime() {
+    const now = new Date();
+    const elapsed = now - startTime;
+
+    const seconds = Math.floor(elapsed / 1000) % 60;
+    const minutes = Math.floor(elapsed / (1000 * 60)) % 60;
+    const hours = Math.floor(elapsed / (1000 * 60 * 60)) % 24;
+    const days = Math.floor(elapsed / (1000 * 60 * 60 * 24)) % 7;
+    const weeks = Math.floor(elapsed / (1000 * 60 * 60 * 24 * 7)) % 4;
+    const months = Math.floor(elapsed / (1000 * 60 * 60 * 24 * 30)) % 12;
+    const years = Math.floor(elapsed / (1000 * 60 * 60 * 24 * 365));
+
+    sessionTimeElement.textContent = `${years}y ${months}m ${weeks}w ${days}d ${hours}h ${minutes}m ${seconds}s`;
+}
+
+setInterval(updateSessionTime, 1000);
 
 // Move the circle to a random position within the game container
 function spawnCircle() {
@@ -221,4 +247,3 @@ function spawnCircle() {
 updateMoney();
 const circleSpawnInterval = setInterval(spawnCircle, 1000);
 spawnCircle();
-
