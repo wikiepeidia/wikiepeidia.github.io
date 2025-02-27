@@ -132,7 +132,7 @@ upgrade3Btn.addEventListener("click", () => {
     upgrade3Count = buyUpgrade(upgrade3Cost, upgrade3Count, () => {
         multiplier *= 2;
         upgrade3Cost = Math.ceil(upgrade3Cost * 2.2);
-    }, "💎 x2 Multiplier");
+    }, "💎 INCREASE Multiplier");
     updateUI();
 });
 
