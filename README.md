@@ -44,7 +44,9 @@ The game is intentionally easy and fast-paced compared to typical incremental ga
 ## Cheat System
 
 A hidden cheat system allows you to unlock a special menu by entering a passcode. This lets you test large numbers and see how the game handles extreme values.
+
 To access it, click the "🧪 Test Large Numbers (Cheat)" button and enter the passcode when prompted
+
 99% of you guys will use because no one wait on this game, it is not ROBLOX, it is not saving your data. Feel free to use it, but remember that this is just a test for large numbers, not a real cheat system.
 
 ## Contributors
@@ -76,3 +78,7 @@ A game that focuses purely on buying upgrades and watching money increase very f
 - **Simpler mechanics** - Focus on just a few upgrade types
 - **Higher multipliers** - Numbers grow more dramatically
 - **Easier to play** - Less complex strategy required
+![alt text](photo/PhotoGrid_1580030426532.jpg)
+![alt text](photo/RobloxScreenShot20250121_141949984.png)
+![alt text](photo/RobloxScreenShot20250121_141956169.png)
+![alt text](photo/Screenshot_2020-01-17-21-57-04-10.png)
