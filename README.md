@@ -1,1 +1,1 @@
-# COURSE: web app development PRACTICAL WORKS
+# archive of my old channel
