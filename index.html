@@ -89,6 +89,15 @@
             color: #606060;
         }
 
+        .video-estimated-date {
+            font-size: 11px;
+            color: #999;
+            font-style: italic;
+            margin-top: 4px;
+            padding-top: 4px;
+            border-top: 1px solid #f0f0f0;
+        }
+
         .video-id {
             font-family: monospace;
             background: #f0f0f0;
@@ -190,6 +199,77 @@
             background: #a80000;
         }
 
+        .archive-date {
+            color: #999;
+            font-size: 12px;
+            font-style: italic;
+            margin-top: 4px;
+        }
+
+        .section-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 20px;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-tab {
+            flex: 1;
+            padding: 16px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            color: #606060;
+            background: #f9f9f9;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .section-tab.active {
+            color: #065fd4;
+            background: #fff;
+            border-bottom: 3px solid #065fd4;
+        }
+
+        .section-tab:hover {
+            background: #f0f0f0;
+        }
+
+        .section-content {
+            display: none;
+        }
+
+        .section-content.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-header {
+            background: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #065fd4;
+        }
+
         @media (max-width: 768px) {
             .channel-header {
                 flex-direction: column;
@@ -204,6 +284,20 @@
                 width: 60px;
                 height: 60px;
             }
+
+            .section-tabs {
+                flex-direction: column;
+            }
+
+            .section-tab {
+                border-bottom: none;
+                border-left: 3px solid transparent;
+            }
+
+            .section-tab.active {
+                border-bottom: none;
+                border-left: 3px solid #065fd4;
+            }
         }
     </style>
     <script>
@@ -212,9 +306,13 @@
             if (!img.dataset.triedLocal) {
                 img.dataset.triedLocal = "true";
                 img.src = "images/" + videoId + ".webp";
+            } else if (!img.dataset.triedPhotoFolder) {
+                // Second fallback: try photo folder
+                img.dataset.triedPhotoFolder = "true";
+                img.src = "photo/" + videoId + ".jpg";
             } else {
-                // Second fallback: show custom message
-                img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='118'%3E%3Crect fill='%23ff6b6b' width='210' height='118'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='14'%3EFUCK wayback machine%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='11'%3Ecouldnt save lol%3C/text%3E%3C/svg%3E";
+                // Third fallback: show custom message
+                img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='118'%3E%3Crect fill='%23ff6b6b' width='210' height='118'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='14'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='11'%3Ecouldnt save lol%3C/text%3E%3C/svg%3E";
             }
         }
 
@@ -222,203 +320,466 @@
             // First fallback: try local photo folder
             if (!img.dataset.triedLocal) {
                 img.dataset.triedLocal = "true";
-                img.src = "images/big banner.jpg";
+                img.src = "photo/PhotoGrid_1580030426532.jpg";
             } else if (!img.dataset.triedSecondLocal) {
                 // Second fallback: try another local image
                 img.dataset.triedSecondLocal = "true";
-                img.src = "images/channels4_banner.jpg";
+                img.src = "photo/RobloxScreenShot20250121_141949984.png";
             } else {
                 // Final fallback: hide banner
                 img.style.display = 'none';
             }
         }
 
-        function handleAvatarError(img) {
-            // First fallback: try local favicon
+        function handleAvatarError(img, fallbackPath) {
+            // First fallback: try specified fallback path
             if (!img.dataset.triedLocal) {
                 img.dataset.triedLocal = "true";
-                img.src = "images/avatar.jpg";
+                img.src = fallbackPath || "photo/favicon.ico";
             } else {
                 // Second fallback: custom TP icon
                 img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect fill='%23065fd4' width='80' height='80'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='white' font-size='30' font-weight='bold'%3ETP%3C/text%3E%3C/svg%3E";
             }
+        }
+
+        function switchSection(sectionName) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section-content');
+            sections.forEach(s => s.classList.remove('active'));
+
+            // Remove active from all tabs
+            const tabs = document.querySelectorAll('.section-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+
+            // Show selected section
+            const section = document.getElementById(sectionName);
+            if (section) {
+                section.classList.add('active');
+            }
+
+            // Mark tab as active
+            const tab = document.querySelector(`[data-section="${sectionName}"]`);
+            if (tab) {
+                tab.classList.add('active');
+            }
+
+            // Save preference
+            localStorage.setItem('selectedSection', sectionName);
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            const saved = localStorage.getItem('selectedSection') || '2020';
+            switchSection(saved);
+        });
+
+        function handleVideoClick(e) {
+            e.preventDefault();
+
+            // Get the video ID from the parent card's video-id element
+            const videoCard = e.target.closest('.video-card');
+            const videoIdElement = videoCard.querySelector('.video-id');
+            const videoId = videoIdElement ? videoIdElement.textContent.trim().replace(/^ID:\s*/, '') : '';
+
+            // Remade videos mapping
+            const remadeVideos = {
+                'Us0RRukXTt8': 'https://youtu.be/zNa4fspDVIY',
+                'Z4Lc9qF8_1Y': 'https://youtu.be/y8gjr5AUDLg',
+                'LFajTPb4bCY': 'https://youtu.be/3U2h8a2jKrU',
+                'M9_CzgOSoEs': 'https://youtu.be/GwaCnirgHP0',
+                'm4bo6Ak-Ivk': 'https://youtu.be/Oq9DNc8KbOQ',
+                'tye_RULula0': 'https://youtu.be/UKEDLzXpMfQ',
+            };
+
+            // Archived videos mapping
+            const archivedVideos = {
+                'PXGGAJ6bWb8': 'https://youtu.be/nLwKkjmJqr4',
+                'L0KLThYkErQ': 'https://youtu.be/2zv-8GLCRg0'
+            };
+
+            // Wikipedia ripped videos mapping
+            const wikipediaRipped = {
+                'S3_eXZzbkRI': 'https://vi.wikipedia.org/wiki/T%E1%BA%ADp_tin:Indonesia_Raya_1945.ogv'
+            };
+
+            // Scratch project videos mapping
+            const scratchProjects = {
+                'Hlliz4ifUbw': 'https://scratch.mit.edu/projects/427351485/'
+            };
+
+            // Check if this is a Wikipedia ripped video
+            if (wikipediaRipped[videoId]) {
+                if (confirm('📚 This video is RIPPED of Wikipedia lmao!\n\nWould you like to watch it?')) {
+                    window.open(wikipediaRipped[videoId], '_blank');
+                }
+            } else if (scratchProjects[videoId]) {
+                // Check if this is a Scratch project
+                if (confirm('🎮 This video is not archived, but the project is online on Scratch!\n\nWould you like to test it?')) {
+                    window.open(scratchProjects[videoId], '_blank');
+                }
+            } else if (archivedVideos[videoId]) {
+                // Check if this video is archived
+                if (confirm('📺 This video IS ARCHIVED!\n\nWould you like to watch it?')) {
+                    window.open(archivedVideos[videoId], '_blank');
+                }
+            } else if (remadeVideos[videoId]) {
+                // Check if this video has a remake
+                if (confirm('✅ This video is REMADE!\n\nWould you like to watch it?')) {
+                    window.open(remadeVideos[videoId], '_blank');
+                }
+            } else {
+                // Default message for non-remade videos
+                if (confirm('🚫 This video is NOT ARCHIVED\n\nWould you like to see possible remakes in my REMAKE-OLD-VID channel?')) {
+                    window.open('https://www.youtube.com/@ptm2409temp', '_blank');
+                }
+            }
+            return false;
         }
     </script>
 </head>
 
 <body>
     <div class="restored-notice">
-        ⚠️ Restored from Wayback Machine archive (August 1, 2019) - FUCK 2019 wayback is cooked UI couldnt load yet
-        script thank GOD the back end codes still there. Credit to copilot to FIX.
+        ✨ Archived YouTube Channel - Multi-year snapshot restored from Wayback Machine. Click tabs below to explore
+        different periods.
     </div>
 
-    <!-- Channel Banner -->
-    <img src="https://web.archive.org/web/20190801081144/https://yt3.ggpht.com/xvxUcl0QbY0bDn0hGd9I5rPdi3x2jSR_VJ6Xz92QYF99Jb4cys_6MP7HbysIWtqmYCe2fXUx9A=w2560-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj"
-        alt="Channel Banner" class="channel-banner" onerror="handleBannerError(this)">
-
-    <!-- Channel Header -->
-    <div class="channel-header">
-        <img src="https://web.archive.org/web/20190801081144/https://yt3.ggpht.com/a/AGF-l79jeAtfo0l4ibN49RaYTy5CCcP3D6AbBgt9VQ=s288-c-k-c0xffffffff-no-rj-mo"
-            alt="The Minh Pham" class="channel-avatar" onerror="handleAvatarError(this)">
-
-        <div class="channel-info">
-            <div class="channel-title">The Minh Pham (wikiepeidia's channel)</div>
-            <div class="channel-stats">
-                UCjRq19XQzPhxnfIrHsqFWSQ • 11 subscribers • 12 videos archived (Aug 1, 2019)
-            </div>
-            <div class="header-links">
-                <a href="http://affsuzukicup.com" class="header-link" target="_blank" rel="noopener">🔗 affsuzukicup</a>
-            </div>
-        </div>
-
-        <button class="subscribe-btn"
-            onclick="if(confirm('This is an archived channel from 2019. Subscribe feature is not available.\n\nWould you like to subscribe to my main channel now?')){window.open('https://www.youtube.com/@wikiepeidia','_blank');}">
-            Subscribe
+    <!-- Section Tabs -->
+    <div class="section-tabs">
+        <button class="section-tab active" data-section="2020" onclick="switchSection('2020')">
+            📅 November 8, 2020 (60 subscribers)
+        </button>
+        <button class="section-tab" data-section="2019" onclick="switchSection('2019')">
+            📅 August 1, 2019 (11 subscribers)
         </button>
     </div>
 
-    <div class="header">
-        <h1>Videos</h1>
-        <div class="info">
-            12 videos archived ON aug1 2019 (since it is NOT a /video page this is homepage -->only like 12 shown )
+    <!-- 2020 SECTION -->
+    <div id="2020" class="section-content active">
+        <!-- Channel Banner -->
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1280' height='200'%3E%3Crect fill='%23ff6b6b' width='1280' height='200'/%3E%3Ctext x='50%25' y='35%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='24'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='65%25' text-anchor='middle' dy='.3em' fill='white' font-size='14'%3EBANNER isnt captured (watchout or it stretch)%3C/text%3E%3C/svg%3E"
+            alt="Channel Banner 2020" class="channel-banner" onerror="handleBannerError(this)">
+
+        <!-- Channel Header -->
+        <div class="channel-header">
+            <img src="https://web.archive.org/web/20240414084945/https://yt3.ggpht.com/a/AATXAJwoEwhs652KftmSGKJRZlWGNX9T6MlzTXoWbsb-=s88-c-k-c0x00ffffff-no-rj"
+                alt="Thế Minh Phạm" class="channel-avatar"
+                onerror="handleAvatarError(this, 'photo/nov82020avatar.jpg')">
+
+            <div class="channel-info">
+                <div class="channel-title">Thế Minh Phạm</div>
+                <div class="channel-stats">
+                    60 subscribers • 12 videos captured/~150
+                </div>
+                <div class="archive-date">📅 Snapshot from November 8, 2020</div>
+                <div class="header-links">
+                    <a href="http://affsuzukicup.com" class="header-link" target="_blank" rel="noopener">🔗
+                        affsuzukicup.com</a>
+                </div>
+            </div>
+
+            <button class="subscribe-btn"
+                onclick="if(confirm('This is an archived channel from 2020. Subscribe feature is not available.\n\nWould you like to subscribe to the main channel?')){window.open('https://www.youtube.com/@wikiepeidia','_blank');}">
+                Subscribe
+            </button>
+        </div>
+
+        <div class="section-header">
+            <h1>Videos (November 2020)</h1>
+            <div class="info">12 videos from this archived snapshot</div>
+        </div>
+
+        <div class="videos-grid">
+            <a href="#" class="video-card" onclick="return handleVideoClick(event)">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='118'%3E%3Crect fill='%23ff6b6b' width='210' height='118'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='14'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='11'%3Ecouldnt save lol%3C/text%3E%3C/svg%3E"
+                    alt="Windows 10 v2004 super lite" class="thumbnail" onerror="handleImageError(this, 'Us0RRukXTt8')">
+                <div class="video-info">
+                    <div class="video-title">Windows 10 v2004 super lite.(with download link)</div>
+                    <div class="video-meta">73 views • 2 days ago</div>
+                    <div class="video-estimated-date">📅 November 5 2020</div>
+                    <div class="video-id">Us0RRukXTt8</div>
+                </div>
+            </a>
+            <a href="#" class="video-card" onclick="return handleVideoClick(event)">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='118'%3E%3Crect fill='%23ff6b6b' width='210' height='118'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='14'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='11'%3Ecouldnt save lol%3C/text%3E%3C/svg%3E"
+                    alt="Linux mint" class="thumbnail" onerror="handleImageError(this, 'Z4Lc9qF8_1Y')">
+                <div class="video-info">
+                    <div class="video-title">Linux mint</div>
+                    <div class="video-meta">25 views • 3 days ago</div>
+                    <div class="video-estimated-date">📅 November 4 2020</div>
+                    <div class="video-id">Z4Lc9qF8_1Y</div>
+                </div>
+            </a>
+            <a href="#" class="video-card" onclick="return handleVideoClick(event)">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='118'%3E%3Crect fill='%23ff6b6b' width='210' height='118'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='14'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='11'%3Ecouldnt save lol%3C/text%3E%3C/svg%3E"
+                    alt="Can you play games on windows server?" class="thumbnail"
+                    onerror="handleImageError(this, 'LFajTPb4bCY')">
+                <div class="video-info">
+                    <div class="video-title">Can you play games on windows server?</div>
+                    <div class="video-meta">15 views • 3 days ago</div>
+                    <div class="video-estimated-date">📅 November 4 2020</div>
+                    <div class="video-id">LFajTPb4bCY</div>
+                </div>
+            </a>
+            <a href="#" class="video-card" onclick="return handleVideoClick(event)">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='118'%3E%3Crect fill='%23ff6b6b' width='210' height='118'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='14'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='11'%3Ecouldnt save lol%3C/text%3E%3C/svg%3E"
+                    alt="Among us full match" class="thumbnail" onerror="handleImageError(this, 'tye_RULula0')">
+                <div class="video-info">
+                    <div class="video-title">Among us full match</div>
+                    <div class="video-meta">6 views • 3 weeks ago</div>
+                    <div class="video-estimated-date">📅 October 12 2020</div>
+                    <div class="video-id">tye_RULula0</div>
+                </div>
+            </a>
+            <a href="#" class="video-card" onclick="return handleVideoClick(event)">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='118'%3E%3Crect fill='%23ff6b6b' width='210' height='118'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='14'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='11'%3Ecouldnt save lol%3C/text%3E%3C/svg%3E"
+                    alt="Among Us" class="thumbnail" onerror="handleImageError(this, 'ppzx-i9Q8HA')">
+                <div class="video-info">
+                    <div class="video-title">Among Us</div>
+                    <div class="video-meta">8 views • 3 weeks ago</div>
+                    <div class="video-estimated-date">📅 October 12 2020</div>
+                    <div class="video-id">ppzx-i9Q8HA</div>
+                </div>
+            </a>
+            <a href="#" class="video-card" onclick="return handleVideoClick(event)">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='118'%3E%3Crect fill='%23ff6b6b' width='210' height='118'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='14'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='11'%3Ecouldnt save lol%3C/text%3E%3C/svg%3E"
+                    alt="MEMZ runs on windows PE on a CD!" class="thumbnail"
+                    onerror="handleImageError(this, 'M9_CzgOSoEs')">
+                <div class="video-info">
+                    <div class="video-title">MEMZ runs on windows PE on a CD!</div>
+                    <div class="video-meta">8 views • 3 weeks ago</div>
+                    <div class="video-estimated-date">📅 October 12 2020</div>
+                    <div class="video-id">M9_CzgOSoEs</div>
+                </div>
+            </a>
+            <a href="#" class="video-card" onclick="return handleVideoClick(event)">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='118'%3E%3Crect fill='%23ff6b6b' width='210' height='118'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='14'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='11'%3Ecouldnt save lol%3C/text%3E%3C/svg%3E"
+                    alt="Hướng dẫn chơi Bay cao Việt Nam (DP1)" class="thumbnail"
+                    onerror="handleImageError(this, 'Hlliz4ifUbw')">
+                <div class="video-info">
+                    <div class="video-title">Hướng dẫn chơi Bay cao Việt Nam (DP1)</div>
+                    <div class="video-meta">3 views • 1 month ago</div>
+                    <div class="video-estimated-date">📅 September 25 2020</div>
+                    <div class="video-id">Hlliz4ifUbw</div>
+                </div>
+            </a>
+            <a href="#" class="video-card" onclick="return handleVideoClick(event)">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='118'%3E%3Crect fill='%23ff6b6b' width='210' height='118'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='14'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='11'%3Ecouldnt save lol%3C/text%3E%3C/svg%3E"
+                    alt="Roblox gameplay part3: Tower of hell" class="thumbnail"
+                    onerror="handleImageError(this, 'PXGGAJ6bWb8')">
+                <div class="video-info">
+                    <div class="video-title">Roblox gameplay part3: Tower of hell</div>
+                    <div class="video-meta">9 views • 1 month ago</div>
+                    <div class="video-estimated-date">📅 September 18 2020</div>
+                    <div class="video-id">PXGGAJ6bWb8</div>
+                </div>
+            </a>
+            <a href="#" class="video-card" onclick="return handleVideoClick(event)">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='118'%3E%3Crect fill='%23ff6b6b' width='210' height='118'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='14'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='11'%3Ecouldnt save lol%3C/text%3E%3C/svg%3E"
+                    alt="ROBLOX gameplay part2: jailbreak" class="thumbnail"
+                    onerror="handleImageError(this, 'L0KLThYkErQ')">
+                <div class="video-info">
+                    <div class="video-title">ROBLOX gameplay part2: jailbreak</div>
+                    <div class="video-meta">14 views • 1 month ago</div>
+                    <div class="video-estimated-date">📅 September 18 2020</div>
+                    <div class="video-id">L0KLThYkErQ</div>
+                </div>
+            </a>
+            <a href="#" class="video-card" onclick="return handleVideoClick(event)">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='118'%3E%3Crect fill='%23ff6b6b' width='210' height='118'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='14'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='11'%3Ecouldnt save lol%3C/text%3E%3C/svg%3E"
+                    alt="ROBLOX gameplay part 1: B I G paintball" class="thumbnail"
+                    onerror="handleImageError(this, 'm2XAw0Tf6qM')">
+                <div class="video-info">
+                    <div class="video-title">ROBLOX gameplay part 1: B I G paintball</div>
+                    <div class="video-meta">7 views • 1 month ago</div>
+                    <div class="video-estimated-date">📅 September 18 2020</div>
+                    <div class="video-id">m2XAw0Tf6qM</div>
+                </div>
+            </a>
+            <a href="#" class="video-card" onclick="return handleVideoClick(event)">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='118'%3E%3Crect fill='%23ff6b6b' width='210' height='118'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='14'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='11'%3Ecouldnt save lol%3C/text%3E%3C/svg%3E"
+                    alt="Rick astley plays Tower of hell" class="thumbnail"
+                    onerror="handleImageError(this, 'm4bo6Ak-Ivk')">
+                <div class="video-info">
+                    <div class="video-title">Rick astley plays Tower of hell</div>
+                    <div class="video-meta">80 views • 1 month ago</div>
+                    <div class="video-estimated-date">📅 September 17 2020</div>
+                    <div class="video-id">m4bo6Ak-Ivk</div>
+                </div>
+            </a>
+            <a href="#" class="video-card" onclick="return handleVideoClick(event)">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='118'%3E%3Crect fill='%23ff6b6b' width='210' height='118'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='14'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='11'%3Ecouldnt save lol%3C/text%3E%3C/svg%3E"
+                    alt="MEMZ-Stick bug Challenge" class="thumbnail" onerror="handleImageError(this, 'LvLcduzcJAM')">
+                <div class="video-info">
+                    <div class="video-title">MEMZ-Stick bug Challenge</div>
+                    <div class="video-meta">31 views • 1 month ago</div>
+                    <div class="video-estimated-date">📅 September 14 2020</div>
+                    <div class="video-id">LvLcduzcJAM</div>
+                </div>
+            </a>
         </div>
     </div>
 
-    <div class="videos-grid">
-        <a href="https://www.youtube.com/watch?v=S3_eXZzbkRI" class="video-card" target="_blank" rel="noopener">
-            <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/S3_eXZzbkRI/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLDe87PcjytlBNFTPPZRhqmg0u_yBA"
-                alt="Indonesia Raya (national anthem of indonesia) in 1945" class="thumbnail"
-                onerror="handleImageError(this, 'S3_eXZzbkRI')">
-            <div class="video-info">
-                <div class="video-title">Indonesia Raya (national anthem of indonesia) in 1945</div>
-                <div class="video-meta">
-                    49 views • 2 months ago
+    <!-- 2019 SECTION -->
+    <div id="2019" class="section-content">
+        <!-- Channel Banner -->
+        <img src="https://web.archive.org/web/20190801081144/https://yt3.ggpht.com/xvxUcl0QbY0bDn0hGd9I5rPdi3x2jSR_VJ6Xz92QYF99Jb4cys_6MP7HbysIWtqmYCe2fXUx9A=w2560-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj"
+            alt="Channel Banner 2019" class="channel-banner" onerror="handleBannerError(this)">
+
+        <!-- Channel Header -->
+        <div class="channel-header">
+            <img src="https://web.archive.org/web/20190801081144/https://yt3.ggpht.com/a/AGF-l79jeAtfo0l4ibN49RaYTy5CCcP3D6AbBgt9VQ=s288-c-k-c0xffffffff-no-rj-mo"
+                alt="The Minh Pham" class="channel-avatar" onerror="handleAvatarError(this, 'photo/favicon.ico')">
+
+            <div class="channel-info">
+                <div class="channel-title">The Minh Pham</div>
+                <div class="channel-stats">
+                    11 subscribers • 12 videos captured/~40
                 </div>
-                <div class="video-id">ID: S3_eXZzbkRI</div>
-            </div>
-        </a>
-        <a href="https://www.youtube.com/watch?v=o2myC91DheY" class="video-card" target="_blank" rel="noopener">
-            <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/o2myC91DheY/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLAtP_VkkjEnt6TiVaERyw6RiyDBRw"
-                alt="trying to crash win7" class="thumbnail" onerror="handleImageError(this, 'o2myC91DheY')">
-            <div class="video-info">
-                <div class="video-title">trying to crash win7</div>
-                <div class="video-meta">
-                    11 views • 2 years ago
+                <div class="archive-date">📅 Snapshot from August 1, 2019</div>
+                <div class="header-links">
+                    <a href="http://affsuzukicup.com" class="header-link" target="_blank" rel="noopener">🔗
+                        affsuzukicup.com</a>
                 </div>
-                <div class="video-id">ID: o2myC91DheY</div>
             </div>
-        </a>
-        <a href="https://www.youtube.com/watch?v=mk5ewze8Emo" class="video-card" target="_blank" rel="noopener">
-            <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/mk5ewze8Emo/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLAb-V8wt2D_wa9aYcam84GCObgQ2Q"
-                alt="Destroy win XP starter editon" class="thumbnail" onerror="handleImageError(this, 'mk5ewze8Emo')">
-            <div class="video-info">
-                <div class="video-title">Destroy win XP starter editon</div>
-                <div class="video-meta">
-                    108 views • 2 years ago
+
+            <button class="subscribe-btn"
+                onclick="if(confirm('This is an archived channel from 2019. Subscribe feature is not available.\n\nWould you like to subscribe to the main channel?')){window.open('https://www.youtube.com/@wikiepeidia','_blank');}">
+                Subscribe
+            </button>
+        </div>
+
+        <div class="section-header">
+            <h1>Videos (August 2019)</h1>
+            <div class="info">12 videos archived from this snapshot</div>
+        </div>
+
+        <div class="videos-grid">
+            <a href="#" class="video-card" onclick="return handleVideoClick(event)">
+                <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/S3_eXZzbkRI/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLDe87PcjytlBNFTPPZRhqmg0u_yBA"
+                    alt="Indonesia Raya (national anthem of indonesia) in 1945" class="thumbnail"
+                    onerror="handleImageError(this, 'S3_eXZzbkRI')">
+                <div class="video-info">
+                    <div class="video-title">Indonesia Raya (national anthem of indonesia) in 1945</div>
+                    <div class="video-meta">49 views • 2 months ago</div>
+                    <div class="video-estimated-date">📅 May 5 2019</div>
+                    <div class="video-id">ID: S3_eXZzbkRI</div>
                 </div>
-                <div class="video-id">ID: mk5ewze8Emo</div>
-            </div>
-        </a>
-        <a href="https://www.youtube.com/watch?v=52bTbu9NztM" class="video-card" target="_blank" rel="noopener">
-            <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/52bTbu9NztM/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLAJuB7r7BBz-Uw7QHX5ybwR5fAShg"
-                alt="TRying to fix Win XP start menu" class="thumbnail" onerror="handleImageError(this, '52bTbu9NztM')">
-            <div class="video-info">
-                <div class="video-title">TRying to fix Win XP start menu</div>
-                <div class="video-meta">
-                    33 views • 2 years ago
+            </a>
+            <a href="#" class="video-card" onclick="return handleVideoClick(event)">
+                <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/o2myC91DheY/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLAtP_VkkjEnt6TiVaERyw6RiyDBRw"
+                    alt="trying to crash win7" class="thumbnail" onerror="handleImageError(this, 'o2myC91DheY')">
+                <div class="video-info">
+                    <div class="video-title">trying to crash win7</div>
+                    <div class="video-meta">11 views • 2 years ago</div>
+                    <div class="video-estimated-date">📅 Estimated: ~2017</div>
+                    <div class="video-id">ID: o2myC91DheY</div>
                 </div>
-                <div class="video-id">ID: 52bTbu9NztM</div>
-            </div>
-        </a>
-        <a href="https://www.youtube.com/watch?v=oQSQQFeDQ2w" class="video-card" target="_blank" rel="noopener">
-            <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/oQSQQFeDQ2w/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLAzsXeigBEaDkvhj9aLxvNTZsQMBw"
-                alt="Destroy win THIN PC 2010" class="thumbnail" onerror="handleImageError(this, 'oQSQQFeDQ2w')">
-            <div class="video-info">
-                <div class="video-title">Destroy win THIN PC 2010</div>
-                <div class="video-meta">
-                    32 views • 2 years ago
+            </a>
+            <a href="#" class="video-card" onclick="return handleVideoClick(event)">
+                <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/mk5ewze8Emo/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLAb-V8wt2D_wa9aYcam84GCObgQ2Q"
+                    alt="Destroy win XP starter editon" class="thumbnail"
+                    onerror="handleImageError(this, 'mk5ewze8Emo')">
+                <div class="video-info">
+                    <div class="video-title">Destroy win XP starter editon</div>
+                    <div class="video-meta">108 views • 2 years ago</div>
+                    <div class="video-estimated-date">📅 Estimated: ~2017</div>
+                    <div class="video-id">ID: mk5ewze8Emo</div>
                 </div>
-                <div class="video-id">ID: oQSQQFeDQ2w</div>
-            </div>
-        </a>
-        <a href="https://www.youtube.com/watch?v=cpaq1t6mp2M" class="video-card" target="_blank" rel="noopener">
-            <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/cpaq1t6mp2M/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLCJI-g3m7oSYXuwfCORBHXd6vctxg"
-                alt="Destroy win NT 4.0 server" class="thumbnail" onerror="handleImageError(this, 'cpaq1t6mp2M')">
-            <div class="video-info">
-                <div class="video-title">Destroy win NT 4.0 server</div>
-                <div class="video-meta">
-                    67 views • 2 years ago
+            </a>
+            <a href="#" class="video-card" onclick="return handleVideoClick(event)">
+                <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/52bTbu9NztM/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLAJuB7r7BBz-Uw7QHX5ybwR5fAShg"
+                    alt="TRying to fix Win XP start menu" class="thumbnail"
+                    onerror="handleImageError(this, '52bTbu9NztM')">
+                <div class="video-info">
+                    <div class="video-title">TRying to fix Win XP start menu</div>
+                    <div class="video-meta">33 views • 2 years ago</div>
+                    <div class="video-estimated-date">📅 Estimated: ~2017</div>
+                    <div class="video-id">ID: 52bTbu9NztM</div>
                 </div>
-                <div class="video-id">ID: cpaq1t6mp2M</div>
-            </div>
-        </a>
-        <a href="https://www.youtube.com/watch?v=k5rNgaC42XQ" class="video-card" target="_blank" rel="noopener">
-            <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/k5rNgaC42XQ/hqdefault.jpg?sqp=-oaymwEYCKgBEF5IVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLDF32oE232BSDYlJYI6yf5Kd7iaIQ"
-                alt="win xp destroyed" class="thumbnail" onerror="handleImageError(this, 'k5rNgaC42XQ')">
-            <div class="video-info">
-                <div class="video-title">win xp destroyed</div>
-                <div class="video-meta">
-                    12 views • 2 years ago
+            </a>
+            <a href="#" class="video-card" onclick="return handleVideoClick(event)">
+                <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/oQSQQFeDQ2w/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLAzsXeigBEaDkvhj9aLxvNTZsQMBw"
+                    alt="Destroy win THIN PC 2010" class="thumbnail" onerror="handleImageError(this, 'oQSQQFeDQ2w')">
+                <div class="video-info">
+                    <div class="video-title">Destroy win THIN PC 2010</div>
+                    <div class="video-meta">32 views • 2 years ago</div>
+                    <div class="video-estimated-date">📅 Estimated: ~2017</div>
+                    <div class="video-id">ID: oQSQQFeDQ2w</div>
                 </div>
-                <div class="video-id">ID: k5rNgaC42XQ</div>
-            </div>
-        </a>
-        <a href="https://www.youtube.com/watch?v=z-YkCdba2Xc" class="video-card" target="_blank" rel="noopener">
-            <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/z-YkCdba2Xc/hqdefault.jpg?sqp=-oaymwEYCKgBEF5IVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLDNzzP4lYyQrcDZ6eUeY8znLyBTuw"
-                alt="install and destroy win 97" class="thumbnail" onerror="handleImageError(this, 'z-YkCdba2Xc')">
-            <div class="video-info">
-                <div class="video-title">install and destroy win 97</div>
-                <div class="video-meta">
-                    3 views • 2 years ago
+            </a>
+            <a href="#" class="video-card" onclick="return handleVideoClick(event)">
+                <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/cpaq1t6mp2M/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLCJI-g3m7oSYXuwfCORBHXd6vctxg"
+                    alt="Destroy win NT 4.0 server" class="thumbnail" onerror="handleImageError(this, 'cpaq1t6mp2M')">
+                <div class="video-info">
+                    <div class="video-title">Destroy win NT 4.0 server</div>
+                    <div class="video-meta">67 views • 2 years ago</div>
+                    <div class="video-estimated-date">📅 Estimated: ~2017</div>
+                    <div class="video-id">ID: cpaq1t6mp2M</div>
                 </div>
-                <div class="video-id">ID: z-YkCdba2Xc</div>
-            </div>
-        </a>
-        <a href="https://www.youtube.com/watch?v=ehysnhiFpzw" class="video-card" target="_blank" rel="noopener">
-            <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/ehysnhiFpzw/hqdefault.jpg?sqp=-oaymwEYCKgBEF5IVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLAsej1vK5A_4Ybn-ZOi7qx1B3Svjg"
-                alt="win8 vs hurr-durr.com" class="thumbnail" onerror="handleImageError(this, 'ehysnhiFpzw')">
-            <div class="video-info">
-                <div class="video-title">win8 vs hurr-durr.com</div>
-                <div class="video-meta">
-                    30 views • 2 years ago
+            </a>
+            <a href="#" class="video-card" onclick="return handleVideoClick(event)">
+                <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/k5rNgaC42XQ/hqdefault.jpg?sqp=-oaymwEYCKgBEF5IVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLDF32oE232BSDYlJYI6yf5Kd7iaIQ"
+                    alt="win xp destroyed" class="thumbnail" onerror="handleImageError(this, 'k5rNgaC42XQ')">
+                <div class="video-info">
+                    <div class="video-title">win xp destroyed</div>
+                    <div class="video-meta">12 views • 2 years ago</div>
+                    <div class="video-estimated-date">📅 Estimated: ~2017</div>
+                    <div class="video-id">ID: k5rNgaC42XQ</div>
                 </div>
-                <div class="video-id">ID: ehysnhiFpzw</div>
-            </div>
-        </a>
-        <a href="https://www.youtube.com/watch?v=yHBTm0FxR3k" class="video-card" target="_blank" rel="noopener">
-            <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/yHBTm0FxR3k/hqdefault.jpg?sqp=-oaymwEYCKgBEF5IVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLDEWYmNxb50nzJV12y1t0cwvzPoXQ"
-                alt="virus" class="thumbnail" onerror="handleImageError(this, 'yHBTm0FxR3k')">
-            <div class="video-info">
-                <div class="video-title">virus</div>
-                <div class="video-meta">
-                    5 views • 2 years ago
+            </a>
+            <a href="#" class="video-card" onclick="return handleVideoClick(event)">
+                <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/z-YkCdba2Xc/hqdefault.jpg?sqp=-oaymwEYCKgBEF5IVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLDNzzP4lYyQrcDZ6eUeY8znLyBTuw"
+                    alt="install and destroy win 97" class="thumbnail" onerror="handleImageError(this, 'z-YkCdba2Xc')">
+                <div class="video-info">
+                    <div class="video-title">install and destroy win 97</div>
+                    <div class="video-meta">3 views • 2 years ago</div>
+                    <div class="video-estimated-date">📅 Estimated: ~2017</div>
+                    <div class="video-id">ID: z-YkCdba2Xc</div>
                 </div>
-                <div class="video-id">ID: yHBTm0FxR3k</div>
-            </div>
-        </a>
-        <a href="https://www.youtube.com/watch?v=Nuz-2zkCb7Y" class="video-card" target="_blank" rel="noopener">
-            <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/Nuz-2zkCb7Y/hqdefault.jpg?sqp=-oaymwEYCKgBEF5IVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLDZtGzzAh3WpkTOVQamvRAHU1azdQ"
-                alt="Hoai NT   đã đăng một video lên Dòng thời gian của cô ấy" class="thumbnail"
-                onerror="handleImageError(this, 'Nuz-2zkCb7Y')">
-            <div class="video-info">
-                <div class="video-title">Hoai NT đã đăng một video lên Dòng thời gian của cô ấy</div>
-                <div class="video-meta">
-                    12 views • 2 years ago
+            </a>
+            <a href="#" class="video-card" onclick="return handleVideoClick(event)">
+                <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/ehysnhiFpzw/hqdefault.jpg?sqp=-oaymwEYCKgBEF5IVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLAsej1vK5A_4Ybn-ZOi7qx1B3Svjg"
+                    alt="win8 vs hurr-durr.com" class="thumbnail" onerror="handleImageError(this, 'ehysnhiFpzw')">
+                <div class="video-info">
+                    <div class="video-title">win8 vs hurr-durr.com</div>
+                    <div class="video-meta">30 views • 2 years ago</div>
+                    <div class="video-estimated-date">📅 Estimated: ~2017</div>
+                    <div class="video-id">ID: ehysnhiFpzw</div>
                 </div>
-                <div class="video-id">ID: Nuz-2zkCb7Y</div>
-            </div>
-        </a>
-        <a href="https://www.youtube.com/watch?v=8T1nnUwSoX8" class="video-card" target="_blank" rel="noopener">
-            <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/8T1nnUwSoX8/hqdefault.jpg?sqp=-oaymwEYCKgBEF5IVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLD3LDfzfp3o1CfORUG19wB6YR0JYA"
-                alt="Hoai NT   Bắn cái rằm" class="thumbnail" onerror="handleImageError(this, '8T1nnUwSoX8')">
-            <div class="video-info">
-                <div class="video-title">Hoai NT Bắn cái rằm</div>
-                <div class="video-meta">
-                    11 views • 2 years ago
+            </a>
+            <a href="#" class="video-card" onclick="return handleVideoClick(event)">
+                <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/yHBTm0FxR3k/hqdefault.jpg?sqp=-oaymwEYCKgBEF5IVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLDEWYmNxb50nzJV12y1t0cwvzPoXQ"
+                    alt="virus" class="thumbnail" onerror="handleImageError(this, 'yHBTm0FxR3k')">
+                <div class="video-info">
+                    <div class="video-title">virus</div>
+                    <div class="video-meta">5 views • 2 years ago</div>
+                    <div class="video-estimated-date">📅 Estimated: ~2017</div>
+                    <div class="video-id">ID: yHBTm0FxR3k</div>
                 </div>
-                <div class="video-id">ID: 8T1nnUwSoX8</div>
-            </div>
-        </a>
+            </a>
+            <a href="#" class="video-card" onclick="return handleVideoClick(event)">
+                <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/Nuz-2zkCb7Y/hqdefault.jpg?sqp=-oaymwEYCKgBEF5IVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLDZtGzzAh3WpkTOVQamvRAHU1azdQ"
+                    alt="Hoai NT   đã đăng một video lên Dòng thời gian của cô ấy" class="thumbnail"
+                    onerror="handleImageError(this, 'Nuz-2zkCb7Y')">
+                <div class="video-info">
+                    <div class="video-title">Hoai NT đã đăng một video lên Dòng thời gian của cô ấy</div>
+                    <div class="video-meta">12 views • 2 years ago</div>
+                    <div class="video-estimated-date">📅 Estimated: May 7 2017</div>
+                    <div class="video-id">ID: Nuz-2zkCb7Y</div>
+                </div>
+            </a>
+            <a href="#" class="video-card" onclick="return handleVideoClick(event)">
+                <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/8T1nnUwSoX8/hqdefault.jpg?sqp=-oaymwEYCKgBEF5IVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLD3LDfzfp3o1CfORUG19wB6YR0JYA"
+                    alt="Hoai NT   Bắn cái rằm" class="thumbnail" onerror="handleImageError(this, '8T1nnUwSoX8')">
+                <div class="video-info">
+                    <div class="video-title">Hoai NT Bắn cái rằm</div>
+                    <div class="video-meta">11 views • 2 years ago</div>
+                    <div class="video-estimated-date">📅 Estimated: April-May 2017</div>
+                    <div class="video-id">ID: 8T1nnUwSoX8</div>
+                </div>
+            </a>
+        </div>
     </div>
 </body>
 
