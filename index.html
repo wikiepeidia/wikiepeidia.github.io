@@ -5,437 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Minh Pham - Videos</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Roboto', Arial, sans-serif;
-            background-color: #f9f9f9;
-            padding: 20px;
-        }
-
-        .header {
-            background: #fff;
-            padding: 20px;
-            margin-bottom: 30px;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            color: #030303;
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-
-        .info {
-            color: #606060;
-            font-size: 14px;
-        }
-
-        .videos-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            max-width: 1800px;
-        }
-
-        .video-card {
-            background: #fff;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-
-        .video-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .thumbnail {
-            width: 100%;
-            aspect-ratio: 16/9;
-            object-fit: cover;
-            background: #f0f0f0;
-        }
-
-        .video-info {
-            padding: 12px;
-        }
-
-        .video-title {
-            font-size: 14px;
-            font-weight: 500;
-            color: #030303;
-            margin-bottom: 8px;
-            line-height: 1.4;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .video-meta {
-            font-size: 12px;
-            color: #606060;
-        }
-
-        .video-estimated-date {
-            font-size: 11px;
-            color: #999;
-            font-style: italic;
-            margin-top: 4px;
-            padding-top: 4px;
-            border-top: 1px solid #f0f0f0;
-        }
-
-        .video-id {
-            font-family: monospace;
-            background: #f0f0f0;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-size: 11px;
-            display: inline-block;
-            margin-top: 4px;
-        }
-
-        .restored-notice {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-
-        .channel-banner {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            background: #e0e0e0;
-            margin-bottom: 20px;
-        }
-
-        .channel-header {
-            background: #fff;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .channel-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            flex-shrink: 0;
-        }
-
-        .channel-info {
-            flex: 1;
-        }
-
-        .channel-title {
-            font-size: 24px;
-            font-weight: 500;
-            color: #030303;
-            margin-bottom: 4px;
-        }
-
-        .channel-stats {
-            color: #606060;
-            font-size: 13px;
-            margin-bottom: 8px;
-        }
-
-        .header-links {
-            display: flex;
-            gap: 12px;
-            margin-top: 8px;
-        }
-
-        .header-link {
-            color: #065fd4;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            padding: 4px 12px;
-            background: #f2f2f2;
-            border-radius: 4px;
-            transition: background 0.2s;
-        }
-
-        .header-link:hover {
-            background: #e5e5e5;
-        }
-
-        .subscribe-btn {
-            background: #cc0000;
-            color: white;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 2px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.2s;
-            flex-shrink: 0;
-        }
-
-        .subscribe-btn:hover {
-            background: #a80000;
-        }
-
-        .archive-date {
-            color: #999;
-            font-size: 12px;
-            font-style: italic;
-            margin-top: 4px;
-        }
-
-        .section-tabs {
-            display: flex;
-            gap: 0;
-            margin-bottom: 20px;
-            background: #fff;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .section-tab {
-            flex: 1;
-            padding: 16px;
-            text-align: center;
-            font-size: 14px;
-            font-weight: 500;
-            color: #606060;
-            background: #f9f9f9;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s;
-            border-bottom: 3px solid transparent;
-        }
-
-        .section-tab.active {
-            color: #065fd4;
-            background: #fff;
-            border-bottom: 3px solid #065fd4;
-        }
-
-        .section-tab:hover {
-            background: #f0f0f0;
-        }
-
-        .section-content {
-            display: none;
-        }
-
-        .section-content.active {
-            display: block;
-            animation: fadeIn 0.3s;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .section-header {
-            background: #fff;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            border-left: 4px solid #065fd4;
-        }
-
-        @media (max-width: 768px) {
-            .channel-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .channel-banner {
-                height: 100px;
-            }
-
-            .channel-avatar {
-                width: 60px;
-                height: 60px;
-            }
-
-            .section-tabs {
-                flex-direction: column;
-            }
-
-            .section-tab {
-                border-bottom: none;
-                border-left: 3px solid transparent;
-            }
-
-            .section-tab.active {
-                border-bottom: none;
-                border-left: 3px solid #065fd4;
-            }
-        }
-    </style>
-    <script>
-        function handleImageError(img, videoId) {
-            // First fallback: try local images folder
-            if (!img.dataset.triedLocal) {
-                img.dataset.triedLocal = "true";
-                img.src = "images/" + videoId + ".webp";
-            } else if (!img.dataset.triedPhotoFolder) {
-                // Second fallback: try photo folder
-                img.dataset.triedPhotoFolder = "true";
-                img.src = "photo/" + videoId + ".jpg";
-            } else {
-                // Third fallback: show custom message
-                img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='118'%3E%3Crect fill='%23ff6b6b' width='210' height='118'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='14'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='11'%3Ecouldnt save lol%3C/text%3E%3C/svg%3E";
-            }
-        }
-
-        function handleBannerError(img) {
-            // First fallback: try local photo folder
-            if (!img.dataset.triedLocal) {
-                img.dataset.triedLocal = "true";
-                img.src = "photo/PhotoGrid_1580030426532.jpg";
-            } else if (!img.dataset.triedSecondLocal) {
-                // Second fallback: try another local image
-                img.dataset.triedSecondLocal = "true";
-                img.src = "photo/RobloxScreenShot20250121_141949984.png";
-            } else {
-                // Final fallback: hide banner
-                img.style.display = 'none';
-            }
-        }
-
-        function handleAvatarError(img, fallbackPath) {
-            // First fallback: try specified fallback path
-            if (!img.dataset.triedLocal) {
-                img.dataset.triedLocal = "true";
-                img.src = fallbackPath || "photo/favicon.ico";
-            } else {
-                // Second fallback: custom TP icon
-                img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect fill='%23065fd4' width='80' height='80'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='white' font-size='30' font-weight='bold'%3ETP%3C/text%3E%3C/svg%3E";
-            }
-        }
-
-        function switchSection(sectionName) {
-            // Hide all sections
-            const sections = document.querySelectorAll('.section-content');
-            sections.forEach(s => s.classList.remove('active'));
-
-            // Remove active from all tabs
-            const tabs = document.querySelectorAll('.section-tab');
-            tabs.forEach(t => t.classList.remove('active'));
-
-            // Show selected section
-            const section = document.getElementById(sectionName);
-            if (section) {
-                section.classList.add('active');
-            }
-
-            // Mark tab as active
-            const tab = document.querySelector(`[data-section="${sectionName}"]`);
-            if (tab) {
-                tab.classList.add('active');
-            }
-
-            // Save preference
-            localStorage.setItem('selectedSection', sectionName);
-        }
-
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function () {
-            const saved = localStorage.getItem('selectedSection') || '2020';
-            switchSection(saved);
-        });
-
-        function handleVideoClick(e) {
-            e.preventDefault();
-
-            // Get the video ID from the parent card's video-id element
-            const videoCard = e.target.closest('.video-card');
-            const videoIdElement = videoCard.querySelector('.video-id');
-            const videoId = videoIdElement ? videoIdElement.textContent.trim().replace(/^ID:\s*/, '') : '';
-
-            // Remade videos mapping
-            const remadeVideos = {
-                'Us0RRukXTt8': 'https://youtu.be/zNa4fspDVIY',
-                'Z4Lc9qF8_1Y': 'https://youtu.be/y8gjr5AUDLg',
-                'LFajTPb4bCY': 'https://youtu.be/3U2h8a2jKrU',
-                'M9_CzgOSoEs': 'https://youtu.be/GwaCnirgHP0',
-                'm4bo6Ak-Ivk': 'https://youtu.be/Oq9DNc8KbOQ',
-                'tye_RULula0': 'https://youtu.be/UKEDLzXpMfQ',
-            };
-
-            // Archived videos mapping
-            const archivedVideos = {
-                'PXGGAJ6bWb8': 'https://youtu.be/nLwKkjmJqr4',
-                'L0KLThYkErQ': 'https://youtu.be/2zv-8GLCRg0'
-            };
-
-            // Wikipedia ripped videos mapping
-            const wikipediaRipped = {
-                'S3_eXZzbkRI': 'https://vi.wikipedia.org/wiki/T%E1%BA%ADp_tin:Indonesia_Raya_1945.ogv'
-            };
-
-            // Scratch project videos mapping
-            const scratchProjects = {
-                'Hlliz4ifUbw': 'https://scratch.mit.edu/projects/427351485/'
-            };
-
-            // Check if this is a Wikipedia ripped video
-            if (wikipediaRipped[videoId]) {
-                if (confirm('📚 This video is RIPPED of Wikipedia lmao!\n\nWould you like to watch it?')) {
-                    window.open(wikipediaRipped[videoId], '_blank');
-                }
-            } else if (scratchProjects[videoId]) {
-                // Check if this is a Scratch project
-                if (confirm('🎮 This video is not archived, but the project is online on Scratch!\n\nWould you like to test it?')) {
-                    window.open(scratchProjects[videoId], '_blank');
-                }
-            } else if (archivedVideos[videoId]) {
-                // Check if this video is archived
-                if (confirm('📺 This video IS ARCHIVED!\n\nWould you like to watch it?')) {
-                    window.open(archivedVideos[videoId], '_blank');
-                }
-            } else if (remadeVideos[videoId]) {
-                // Check if this video has a remake
-                if (confirm('✅ This video is REMADE!\n\nWould you like to watch it?')) {
-                    window.open(remadeVideos[videoId], '_blank');
-                }
-            } else {
-                // Default message for non-remade videos
-                if (confirm('🚫 This video is NOT ARCHIVED\n\nWould you like to see possible remakes in my REMAKE-OLD-VID channel?')) {
-                    window.open('https://www.youtube.com/@ptm2409temp', '_blank');
-                }
-            }
-            return false;
-        }
-    </script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -452,13 +22,16 @@
         <button class="section-tab" data-section="2019" onclick="switchSection('2019')">
             📅 August 1, 2019 (11 subscribers)
         </button>
+        <button class="section-tab" data-section="achievements" onclick="switchSection('achievements')">
+            🏆 Achievements & Milestones
+        </button>
     </div>
 
     <!-- 2020 SECTION -->
     <div id="2020" class="section-content active">
         <!-- Channel Banner -->
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1280' height='200'%3E%3Crect fill='%23ff6b6b' width='1280' height='200'/%3E%3Ctext x='50%25' y='35%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='24'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='65%25' text-anchor='middle' dy='.3em' fill='white' font-size='14'%3EBANNER isnt captured (watchout or it stretch)%3C/text%3E%3C/svg%3E"
-            alt="Channel Banner 2020" class="channel-banner" onerror="handleBannerError(this)">
+        <img src="images/error-banner.svg" alt="Channel Banner 2020" class="channel-banner"
+            onerror="handleBannerError(this)">
 
         <!-- Channel Header -->
         <div class="channel-header">
@@ -491,8 +64,8 @@
 
         <div class="videos-grid">
             <a href="#" class="video-card" onclick="return handleVideoClick(event)">
-                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='118'%3E%3Crect fill='%23ff6b6b' width='210' height='118'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='14'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='11'%3Ecouldnt save lol%3C/text%3E%3C/svg%3E"
-                    alt="Windows 10 v2004 super lite" class="thumbnail" onerror="handleImageError(this, 'Us0RRukXTt8')">
+                <img src="images/error-thumbnail.svg" alt="Windows 10 v2004 super lite" class="thumbnail"
+                    onerror="handleImageError(this, 'Us0RRukXTt8')">
                 <div class="video-info">
                     <div class="video-title">Windows 10 v2004 super lite.(with download link)</div>
                     <div class="video-meta">73 views • 2 days ago</div>
@@ -501,8 +74,8 @@
                 </div>
             </a>
             <a href="#" class="video-card" onclick="return handleVideoClick(event)">
-                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='118'%3E%3Crect fill='%23ff6b6b' width='210' height='118'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='14'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='11'%3Ecouldnt save lol%3C/text%3E%3C/svg%3E"
-                    alt="Linux mint" class="thumbnail" onerror="handleImageError(this, 'Z4Lc9qF8_1Y')">
+                <img src="images/error-thumbnail.svg" alt="Linux mint" class="thumbnail"
+                    onerror="handleImageError(this, 'Z4Lc9qF8_1Y')">
                 <div class="video-info">
                     <div class="video-title">Linux mint</div>
                     <div class="video-meta">25 views • 3 days ago</div>
@@ -511,8 +84,7 @@
                 </div>
             </a>
             <a href="#" class="video-card" onclick="return handleVideoClick(event)">
-                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='118'%3E%3Crect fill='%23ff6b6b' width='210' height='118'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='14'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='11'%3Ecouldnt save lol%3C/text%3E%3C/svg%3E"
-                    alt="Can you play games on windows server?" class="thumbnail"
+                <img src="images/LFajTPb4bCY.jpg" alt="Can you play games on windows server?" class="thumbnail"
                     onerror="handleImageError(this, 'LFajTPb4bCY')">
                 <div class="video-info">
                     <div class="video-title">Can you play games on windows server?</div>
@@ -522,8 +94,8 @@
                 </div>
             </a>
             <a href="#" class="video-card" onclick="return handleVideoClick(event)">
-                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='118'%3E%3Crect fill='%23ff6b6b' width='210' height='118'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='14'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='11'%3Ecouldnt save lol%3C/text%3E%3C/svg%3E"
-                    alt="Among us full match" class="thumbnail" onerror="handleImageError(this, 'tye_RULula0')">
+                <img src="images/error-thumbnail.svg" alt="Among us full match" class="thumbnail"
+                    onerror="handleImageError(this, 'tye_RULula0')">
                 <div class="video-info">
                     <div class="video-title">Among us full match</div>
                     <div class="video-meta">6 views • 3 weeks ago</div>
@@ -532,8 +104,8 @@
                 </div>
             </a>
             <a href="#" class="video-card" onclick="return handleVideoClick(event)">
-                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='118'%3E%3Crect fill='%23ff6b6b' width='210' height='118'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='14'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='11'%3Ecouldnt save lol%3C/text%3E%3C/svg%3E"
-                    alt="Among Us" class="thumbnail" onerror="handleImageError(this, 'ppzx-i9Q8HA')">
+                <img src="images/error-thumbnail.svg" alt="Among Us" class="thumbnail"
+                    onerror="handleImageError(this, 'ppzx-i9Q8HA')">
                 <div class="video-info">
                     <div class="video-title">Among Us</div>
                     <div class="video-meta">8 views • 3 weeks ago</div>
@@ -542,8 +114,7 @@
                 </div>
             </a>
             <a href="#" class="video-card" onclick="return handleVideoClick(event)">
-                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='118'%3E%3Crect fill='%23ff6b6b' width='210' height='118'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='14'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='11'%3Ecouldnt save lol%3C/text%3E%3C/svg%3E"
-                    alt="MEMZ runs on windows PE on a CD!" class="thumbnail"
+                <img src="images/error-thumbnail.svg" alt="MEMZ runs on windows PE on a CD!" class="thumbnail"
                     onerror="handleImageError(this, 'M9_CzgOSoEs')">
                 <div class="video-info">
                     <div class="video-title">MEMZ runs on windows PE on a CD!</div>
@@ -553,8 +124,7 @@
                 </div>
             </a>
             <a href="#" class="video-card" onclick="return handleVideoClick(event)">
-                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='118'%3E%3Crect fill='%23ff6b6b' width='210' height='118'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='14'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='11'%3Ecouldnt save lol%3C/text%3E%3C/svg%3E"
-                    alt="Hướng dẫn chơi Bay cao Việt Nam (DP1)" class="thumbnail"
+                <img src="images/error-thumbnail.svg" alt="Hướng dẫn chơi Bay cao Việt Nam (DP1)" class="thumbnail"
                     onerror="handleImageError(this, 'Hlliz4ifUbw')">
                 <div class="video-info">
                     <div class="video-title">Hướng dẫn chơi Bay cao Việt Nam (DP1)</div>
@@ -564,8 +134,7 @@
                 </div>
             </a>
             <a href="#" class="video-card" onclick="return handleVideoClick(event)">
-                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='118'%3E%3Crect fill='%23ff6b6b' width='210' height='118'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='14'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='11'%3Ecouldnt save lol%3C/text%3E%3C/svg%3E"
-                    alt="Roblox gameplay part3: Tower of hell" class="thumbnail"
+                <img src="images/error-thumbnail.svg" alt="Roblox gameplay part3: Tower of hell" class="thumbnail"
                     onerror="handleImageError(this, 'PXGGAJ6bWb8')">
                 <div class="video-info">
                     <div class="video-title">Roblox gameplay part3: Tower of hell</div>
@@ -575,8 +144,7 @@
                 </div>
             </a>
             <a href="#" class="video-card" onclick="return handleVideoClick(event)">
-                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='118'%3E%3Crect fill='%23ff6b6b' width='210' height='118'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='14'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='11'%3Ecouldnt save lol%3C/text%3E%3C/svg%3E"
-                    alt="ROBLOX gameplay part2: jailbreak" class="thumbnail"
+                <img src="images/L0KLThYkErQ.jpg" alt="ROBLOX gameplay part2: jailbreak" class="thumbnail"
                     onerror="handleImageError(this, 'L0KLThYkErQ')">
                 <div class="video-info">
                     <div class="video-title">ROBLOX gameplay part2: jailbreak</div>
@@ -586,8 +154,7 @@
                 </div>
             </a>
             <a href="#" class="video-card" onclick="return handleVideoClick(event)">
-                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='118'%3E%3Crect fill='%23ff6b6b' width='210' height='118'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='14'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='11'%3Ecouldnt save lol%3C/text%3E%3C/svg%3E"
-                    alt="ROBLOX gameplay part 1: B I G paintball" class="thumbnail"
+                <img src="images/error-thumbnail.svg" alt="ROBLOX gameplay part 1: B I G paintball" class="thumbnail"
                     onerror="handleImageError(this, 'm2XAw0Tf6qM')">
                 <div class="video-info">
                     <div class="video-title">ROBLOX gameplay part 1: B I G paintball</div>
@@ -597,8 +164,7 @@
                 </div>
             </a>
             <a href="#" class="video-card" onclick="return handleVideoClick(event)">
-                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='118'%3E%3Crect fill='%23ff6b6b' width='210' height='118'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='14'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='11'%3Ecouldnt save lol%3C/text%3E%3C/svg%3E"
-                    alt="Rick astley plays Tower of hell" class="thumbnail"
+                <img src="images/m4bo6Ak-Ivk.jpg" alt="Rick astley plays Tower of hell" class="thumbnail"
                     onerror="handleImageError(this, 'm4bo6Ak-Ivk')">
                 <div class="video-info">
                     <div class="video-title">Rick astley plays Tower of hell</div>
@@ -608,8 +174,8 @@
                 </div>
             </a>
             <a href="#" class="video-card" onclick="return handleVideoClick(event)">
-                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='210' height='118'%3E%3Crect fill='%23ff6b6b' width='210' height='118'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-weight='bold' font-size='14'%3ELMAO wayback machine%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='11'%3Ecouldnt save lol%3C/text%3E%3C/svg%3E"
-                    alt="MEMZ-Stick bug Challenge" class="thumbnail" onerror="handleImageError(this, 'LvLcduzcJAM')">
+                <img src="images/error-thumbnail.svg" alt="MEMZ-Stick bug Challenge" class="thumbnail"
+                    onerror="handleImageError(this, 'LvLcduzcJAM')">
                 <div class="video-info">
                     <div class="video-title">MEMZ-Stick bug Challenge</div>
                     <div class="video-meta">31 views • 1 month ago</div>
@@ -656,9 +222,8 @@
 
         <div class="videos-grid">
             <a href="#" class="video-card" onclick="return handleVideoClick(event)">
-                <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/S3_eXZzbkRI/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLDe87PcjytlBNFTPPZRhqmg0u_yBA"
-                    alt="Indonesia Raya (national anthem of indonesia) in 1945" class="thumbnail"
-                    onerror="handleImageError(this, 'S3_eXZzbkRI')">
+                <img src="images/S3_eXZzbkRI.webp" alt="Indonesia Raya (national anthem of indonesia) in 1945"
+                    class="thumbnail" onerror="handleImageError(this, 'S3_eXZzbkRI')">
                 <div class="video-info">
                     <div class="video-title">Indonesia Raya (national anthem of indonesia) in 1945</div>
                     <div class="video-meta">49 views • 2 months ago</div>
@@ -667,8 +232,8 @@
                 </div>
             </a>
             <a href="#" class="video-card" onclick="return handleVideoClick(event)">
-                <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/o2myC91DheY/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLAtP_VkkjEnt6TiVaERyw6RiyDBRw"
-                    alt="trying to crash win7" class="thumbnail" onerror="handleImageError(this, 'o2myC91DheY')">
+                <img src="images/o2myC91DheY.webp" alt="trying to crash win7" class="thumbnail"
+                    onerror="handleImageError(this, 'o2myC91DheY')">
                 <div class="video-info">
                     <div class="video-title">trying to crash win7</div>
                     <div class="video-meta">11 views • 2 years ago</div>
@@ -677,8 +242,7 @@
                 </div>
             </a>
             <a href="#" class="video-card" onclick="return handleVideoClick(event)">
-                <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/mk5ewze8Emo/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLAb-V8wt2D_wa9aYcam84GCObgQ2Q"
-                    alt="Destroy win XP starter editon" class="thumbnail"
+                <img src="images/mk5ewze8Emo.webp" alt="Destroy win XP starter editon" class="thumbnail"
                     onerror="handleImageError(this, 'mk5ewze8Emo')">
                 <div class="video-info">
                     <div class="video-title">Destroy win XP starter editon</div>
@@ -688,8 +252,7 @@
                 </div>
             </a>
             <a href="#" class="video-card" onclick="return handleVideoClick(event)">
-                <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/52bTbu9NztM/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLAJuB7r7BBz-Uw7QHX5ybwR5fAShg"
-                    alt="TRying to fix Win XP start menu" class="thumbnail"
+                <img src="images/52bTbu9NztM.webp" alt="TRying to fix Win XP start menu" class="thumbnail"
                     onerror="handleImageError(this, '52bTbu9NztM')">
                 <div class="video-info">
                     <div class="video-title">TRying to fix Win XP start menu</div>
@@ -699,8 +262,8 @@
                 </div>
             </a>
             <a href="#" class="video-card" onclick="return handleVideoClick(event)">
-                <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/oQSQQFeDQ2w/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLAzsXeigBEaDkvhj9aLxvNTZsQMBw"
-                    alt="Destroy win THIN PC 2010" class="thumbnail" onerror="handleImageError(this, 'oQSQQFeDQ2w')">
+                <img src="images/oQSQQFeDQ2w.webp" alt="Destroy win THIN PC 2010" class="thumbnail"
+                    onerror="handleImageError(this, 'oQSQQFeDQ2w')">
                 <div class="video-info">
                     <div class="video-title">Destroy win THIN PC 2010</div>
                     <div class="video-meta">32 views • 2 years ago</div>
@@ -709,8 +272,8 @@
                 </div>
             </a>
             <a href="#" class="video-card" onclick="return handleVideoClick(event)">
-                <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/cpaq1t6mp2M/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLCJI-g3m7oSYXuwfCORBHXd6vctxg"
-                    alt="Destroy win NT 4.0 server" class="thumbnail" onerror="handleImageError(this, 'cpaq1t6mp2M')">
+                <img src="images/cpaq1t6mp2M.webp" alt="Destroy win NT 4.0 server" class="thumbnail"
+                    onerror="handleImageError(this, 'cpaq1t6mp2M')">
                 <div class="video-info">
                     <div class="video-title">Destroy win NT 4.0 server</div>
                     <div class="video-meta">67 views • 2 years ago</div>
@@ -719,8 +282,8 @@
                 </div>
             </a>
             <a href="#" class="video-card" onclick="return handleVideoClick(event)">
-                <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/k5rNgaC42XQ/hqdefault.jpg?sqp=-oaymwEYCKgBEF5IVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLDF32oE232BSDYlJYI6yf5Kd7iaIQ"
-                    alt="win xp destroyed" class="thumbnail" onerror="handleImageError(this, 'k5rNgaC42XQ')">
+                <img src="images/error-thumbnail.svg" alt="win xp destroyed" class="thumbnail"
+                    onerror="handleImageError(this, 'k5rNgaC42XQ')">
                 <div class="video-info">
                     <div class="video-title">win xp destroyed</div>
                     <div class="video-meta">12 views • 2 years ago</div>
@@ -729,8 +292,8 @@
                 </div>
             </a>
             <a href="#" class="video-card" onclick="return handleVideoClick(event)">
-                <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/z-YkCdba2Xc/hqdefault.jpg?sqp=-oaymwEYCKgBEF5IVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLDNzzP4lYyQrcDZ6eUeY8znLyBTuw"
-                    alt="install and destroy win 97" class="thumbnail" onerror="handleImageError(this, 'z-YkCdba2Xc')">
+                <img src="images/error-thumbnail.svg" alt="install and destroy win 97" class="thumbnail"
+                    onerror="handleImageError(this, 'z-YkCdba2Xc')">
                 <div class="video-info">
                     <div class="video-title">install and destroy win 97</div>
                     <div class="video-meta">3 views • 2 years ago</div>
@@ -739,8 +302,8 @@
                 </div>
             </a>
             <a href="#" class="video-card" onclick="return handleVideoClick(event)">
-                <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/ehysnhiFpzw/hqdefault.jpg?sqp=-oaymwEYCKgBEF5IVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLAsej1vK5A_4Ybn-ZOi7qx1B3Svjg"
-                    alt="win8 vs hurr-durr.com" class="thumbnail" onerror="handleImageError(this, 'ehysnhiFpzw')">
+                <img src="images/error-thumbnail.svg" alt="win8 vs hurr-durr.com" class="thumbnail"
+                    onerror="handleImageError(this, 'ehysnhiFpzw')">
                 <div class="video-info">
                     <div class="video-title">win8 vs hurr-durr.com</div>
                     <div class="video-meta">30 views • 2 years ago</div>
@@ -749,8 +312,8 @@
                 </div>
             </a>
             <a href="#" class="video-card" onclick="return handleVideoClick(event)">
-                <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/yHBTm0FxR3k/hqdefault.jpg?sqp=-oaymwEYCKgBEF5IVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLDEWYmNxb50nzJV12y1t0cwvzPoXQ"
-                    alt="virus" class="thumbnail" onerror="handleImageError(this, 'yHBTm0FxR3k')">
+                <img src="images/error-thumbnail.svg" alt="virus" class="thumbnail"
+                    onerror="handleImageError(this, 'yHBTm0FxR3k')">
                 <div class="video-info">
                     <div class="video-title">virus</div>
                     <div class="video-meta">5 views • 2 years ago</div>
@@ -759,9 +322,8 @@
                 </div>
             </a>
             <a href="#" class="video-card" onclick="return handleVideoClick(event)">
-                <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/Nuz-2zkCb7Y/hqdefault.jpg?sqp=-oaymwEYCKgBEF5IVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLDZtGzzAh3WpkTOVQamvRAHU1azdQ"
-                    alt="Hoai NT   đã đăng một video lên Dòng thời gian của cô ấy" class="thumbnail"
-                    onerror="handleImageError(this, 'Nuz-2zkCb7Y')">
+                <img src="images/errorsrandom.svg" alt="Hoai NT   đã đăng một video lên Dòng thời gian của cô ấy"
+                    class="thumbnail" onerror="handleImageError(this, 'Nuz-2zkCb7Y')">
                 <div class="video-info">
                     <div class="video-title">Hoai NT đã đăng một video lên Dòng thời gian của cô ấy</div>
                     <div class="video-meta">12 views • 2 years ago</div>
@@ -770,8 +332,8 @@
                 </div>
             </a>
             <a href="#" class="video-card" onclick="return handleVideoClick(event)">
-                <img src="https://web.archive.org/web/20190801081144/https://i.ytimg.com/vi/8T1nnUwSoX8/hqdefault.jpg?sqp=-oaymwEYCKgBEF5IVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLD3LDfzfp3o1CfORUG19wB6YR0JYA"
-                    alt="Hoai NT   Bắn cái rằm" class="thumbnail" onerror="handleImageError(this, '8T1nnUwSoX8')">
+                <img src="images/errorsrandom.svg" alt="Hoai NT   Bắn cái rằm" class="thumbnail"
+                    onerror="handleImageError(this, '8T1nnUwSoX8')">
                 <div class="video-info">
                     <div class="video-title">Hoai NT Bắn cái rằm</div>
                     <div class="video-meta">11 views • 2 years ago</div>
@@ -781,6 +343,106 @@
             </a>
         </div>
     </div>
+
+    <!-- ACHIEVEMENTS SECTION -->
+    <div id="achievements" class="section-content">
+        <div class="section-header">
+            <h1>🏆 Channel Achievements & Milestones</h1>
+            <div class="info">Major milestones and growth achievements throughout 2021</div>
+        </div>
+
+        <div class="achievements-container">
+            <div style="width: 100%;">
+                <h3 style="margin-bottom: 20px; color: #030303; font-size: 16px;">👁️ View Milestones</h3>
+                <div class="achievements-gallery">
+                    <div class="achievement-item">
+                        <img src="images/achivements/25kviewmarch20-2021.png" alt="25K Views">
+                        <div class="achievement-label">25K Views</div>
+                        <div class="achievement-date">March 20, 2021</div>
+                    </div>
+                    <div class="achievement-item">
+                        <img src="images/achivements/30kviewapril1-2021.png" alt="30K Views">
+                        <div class="achievement-label">30K Views</div>
+                        <div class="achievement-date">April 1, 2021</div>
+                    </div>
+                    <div class="achievement-item">
+                        <img src="images/achivements/40kviewapril19-2021.png" alt="40K Views">
+                        <div class="achievement-label">40K Views</div>
+                        <div class="achievement-date">April 19, 2021</div>
+                    </div>
+                    <div class="achievement-item">
+                        <img src="images/achivements/50kviewapril26-2021.png" alt="50K Views">
+                        <div class="achievement-label">50K Views</div>
+                        <div class="achievement-date">April 26, 2021</div>
+                    </div>
+                    <div class="achievement-item">
+                        <img src="images/achivements/60kviewmay2-2021.png" alt="60K Views">
+                        <div class="achievement-label">60K Views</div>
+                        <div class="achievement-date">May 2, 2021</div>
+                    </div>
+                    <div class="achievement-item">
+                        <img src="images/achivements/70kviewmay5-2021.png" alt="70K Views">
+                        <div class="achievement-label">70K Views</div>
+                        <div class="achievement-date">May 5, 2021</div>
+                    </div>
+                    <div class="achievement-item">
+                        <img src="images/achivements/75kviewMay7-2021.png" alt="75K Views">
+                        <div class="achievement-label">75K Views</div>
+                        <div class="achievement-date">May 7, 2021</div>
+                    </div>
+                    <div class="achievement-item">
+                        <img src="images/achivements/90kviewsmay10-2021.png" alt="90K Views">
+                        <div class="achievement-label">90K Views</div>
+                        <div class="achievement-date">May 10, 2021</div>
+                    </div>
+                    <div class="achievement-item">
+                        <img src="images/achivements/100k view may13-2021.webp" alt="100K Views">
+                        <div class="achievement-label">100K Views</div>
+                        <div class="achievement-date">May 13, 2021</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="width: 100%; margin-top: 50px;">
+                <h3 style="margin-bottom: 20px; color: #030303; font-size: 16px;">👥 Subscriber Milestones</h3>
+                <div class="achievements-gallery">
+                    <div class="achievement-item">
+                        <img src="images/achivements/150subapril13-2021.png" alt="150 Subscribers">
+                        <div class="achievement-label">150 Subscribers</div>
+                        <div class="achievement-date">April 13, 2021</div>
+                    </div>
+                    <div class="achievement-item">
+                        <img src="images/achivements/200subapril29-2021.png" alt="200 Subscribers">
+                        <div class="achievement-label">200 Subscribers</div>
+                        <div class="achievement-date">April 29, 2021</div>
+                    </div>
+                    <div class="achievement-item">
+                        <img src="images/achivements/250submay6-2021.png" alt="250 Subscribers">
+                        <div class="achievement-label">250 Subscribers</div>
+                        <div class="achievement-date">May 6, 2021</div>
+                    </div>
+                    <div class="achievement-item">
+                        <img src="images/achivements/300submay11-2021.webp" alt="300 Subscribers">
+                        <div class="achievement-label">300 Subscribers</div>
+                        <div class="achievement-date">May 11, 2021</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="width: 100%; margin-top: 50px;">
+                <h3 style="margin-bottom: 20px; color: #030303; font-size: 16px;">📹 Content Milestones</h3>
+                <div class="achievements-gallery">
+                    <div class="achievement-item">
+                        <img src="images/achivements/200uploadMay17-2021.webp" alt="200 Uploads">
+                        <div class="achievement-label">200 Uploads</div>
+                        <div class="achievement-date">May 17, 2021</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 
 </html>
