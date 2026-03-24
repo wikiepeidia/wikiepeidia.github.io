@@ -87,14 +87,39 @@ Explicitly excluded from v1.
 
 ## Traceability
 
-Updated during roadmap creation.
+Updated: 2026-03-24 (roadmap created — 4 phases, 32 requirements)
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INFRA-01 to INFRA-05 | TBD | Pending |
-| DEPLOY-01 to DEPLOY-03 | TBD | Pending |
-| HOME-01 to HOME-03 | TBD | Pending |
-| BLOG-01 to BLOG-06 | TBD | Pending |
-| ABOUT-01 to ABOUT-04 | TBD | Pending |
-| STATS-01 to STATS-07 | TBD | Pending |
-| UX-01 to UX-04 | TBD | Pending |
+| INFRA-01 | Phase 1: Foundation | Pending |
+| INFRA-02 | Phase 1: Foundation | Pending |
+| INFRA-03 | Phase 1: Foundation | Pending |
+| INFRA-04 | Phase 1: Foundation | Pending |
+| INFRA-05 | Phase 1: Foundation | Pending |
+| DEPLOY-01 | Phase 2: CI/CD & Deployment | Pending |
+| DEPLOY-02 | Phase 2: CI/CD & Deployment | Pending |
+| DEPLOY-03 | Phase 2: CI/CD & Deployment | Pending |
+| HOME-01 | Phase 3: Core Content | Pending |
+| HOME-02 | Phase 3: Core Content | Pending |
+| HOME-03 | Phase 3: Core Content | Pending |
+| BLOG-01 | Phase 3: Core Content | Pending |
+| BLOG-02 | Phase 3: Core Content | Pending |
+| BLOG-03 | Phase 3: Core Content | Pending |
+| BLOG-04 | Phase 3: Core Content | Pending |
+| BLOG-05 | Phase 3: Core Content | Pending |
+| BLOG-06 | Phase 3: Core Content | Pending |
+| ABOUT-01 | Phase 3: Core Content | Pending |
+| ABOUT-02 | Phase 3: Core Content | Pending |
+| ABOUT-03 | Phase 3: Core Content | Pending |
+| ABOUT-04 | Phase 3: Core Content | Pending |
+| STATS-01 | Phase 4: GitHub Stats & Polish | Pending |
+| STATS-02 | Phase 4: GitHub Stats & Polish | Pending |
+| STATS-03 | Phase 4: GitHub Stats & Polish | Pending |
+| STATS-04 | Phase 4: GitHub Stats & Polish | Pending |
+| STATS-05 | Phase 4: GitHub Stats & Polish | Pending |
+| STATS-06 | Phase 4: GitHub Stats & Polish | Pending |
+| STATS-07 | Phase 4: GitHub Stats & Polish | Pending |
+| UX-01 | Phase 4: GitHub Stats & Polish | Pending |
+| UX-02 | Phase 4: GitHub Stats & Polish | Pending |
+| UX-03 | Phase 4: GitHub Stats & Polish | Pending |
+| UX-04 | Phase 4: GitHub Stats & Polish | Pending |
