@@ -39,6 +39,30 @@ const SITE = {
 
   quote: { light: quote("light"), dark: quote("dark") },
 
+  // YouTube id from the URL; `start` (seconds) is optional
+  videos: [
+    {
+      id: "A-yt1UTzRFM",
+      title: "Me & my family",
+      quote: "Myself and my family.",
+    },
+    {
+      id: "e4S8x04DYkg",
+      title: "Crazy stuff on a 2GB RAM PC",
+      quote: "A 12-year-old doing crazy stuff on a PC with 2GB of RAM and an HDD that was already 10 years old in 2017.",
+    },
+    {
+      id: "uGXnbzjt1yE", start: 4,
+      title: "Low effort, same views twice",
+      quote: "Low effort video: 100K views before the takedown. Reuploaded nearly 2 years later, and it still reached the same amount of views.",
+    },
+    {
+      id: "x83fFtAHtUk",
+      title: "12000 mph bus on Roblox",
+      quote: "12000 mph bus on Roblox be like.",
+    },
+  ],
+
   // [label, url, icon file name without ".svg", mono?]. mono = black icon, inverted in dark mode
   socials: [
     ["GitHub", "https://www.github.com/wikiepeidia", "github", true],

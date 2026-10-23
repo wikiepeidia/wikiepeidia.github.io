@@ -21,6 +21,20 @@ $("stats-list").innerHTML = SITE.stats
     </div>`)
   .join("");
 
+$("video-list").innerHTML = SITE.videos
+  .map((v) => `
+    <figure class="video">
+      <iframe src="https://www.youtube-nocookie.com/embed/${v.id}${v.start ? `?start=${v.start}` : ""}"
+        title="${v.title}" loading="lazy" allowfullscreen
+        allow="encrypted-media; picture-in-picture; fullscreen"
+        referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      <figcaption>
+        <h3><a href="https://youtu.be/${v.id}${v.start ? `?t=${v.start}` : ""}" target="_blank" rel="noreferrer">${v.title}</a></h3>
+        <blockquote>${v.quote}</blockquote>
+      </figcaption>
+    </figure>`)
+  .join("");
+
 $("quote").insertAdjacentHTML("beforeend", picture(SITE.quote.light, SITE.quote.dark, "Random quote"));
 $("social-list").innerHTML = SITE.socials
   .map(([name, url, icon, mono]) =>

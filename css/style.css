@@ -85,6 +85,15 @@ dd { margin: 0; font-size: 1.05rem; }
 
 #quote img { max-width: 100%; height: auto; }
 
+.videos { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.video { margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+.video iframe { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; background: #000; }
+.video figcaption { padding: 14px 16px 18px; }
+.video h3 { margin: 0 0 8px; font-size: 1rem; }
+.video h3 a { text-decoration: none; }
+.video h3 a:hover { color: var(--accent); }
+.video blockquote { margin: 0; padding-left: 12px; border-left: 2px solid var(--accent); color: var(--muted); font-size: 15px; }
+
 .links { display: flex; flex-wrap: wrap; gap: 10px; list-style: none; padding: 0; margin: 0; }
 .links a {
   display: block; padding: 8px 16px; border: 1px solid var(--line); border-radius: 999px;
