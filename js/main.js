@@ -10,7 +10,18 @@ const picture = (src, dark, alt) => `
   </picture>`;
 
 $("stack-list").innerHTML = SITE.stack
-  .map(([name, icon]) => `<li><img src="${ICONS}skills/${icon}-colored.svg" alt="" loading="lazy">${name}</li>`)
+  .map(([name, icon]) =>
+    `<li>${icon ? `<img src="${ICONS}skills/${icon}-colored.svg" alt="" loading="lazy">` : ""}${name}</li>`)
+  .join("");
+
+$("project-list").innerHTML = SITE.projects
+  .map((p) => `
+    <a class="project" href="https://github.com/${USER}/${p.repo}" target="_blank" rel="noreferrer">
+      <h3>${p.title}</h3>
+      <p>${p.desc}</p>
+      <ul>${p.tags.map((t) => `<li>${t}</li>`).join("")}</ul>
+      <span class="repo">${USER}/${p.repo} ↗</span>
+    </a>`)
   .join("");
 
 $("stats-list").innerHTML = SITE.stats

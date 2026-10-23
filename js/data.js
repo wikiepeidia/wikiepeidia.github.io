@@ -9,12 +9,16 @@ const streak = (theme) => `https://streak-stats.demolab.com/?user=${USER}&theme=
 const quote = (theme) => `https://quotes-github-readme.vercel.app/api?type=horizontal&theme=${theme}`;
 
 const SITE = {
-  // [label, icon file name without "-colored.svg"]
+  // [label, icon file name without "-colored.svg"]; no icon = text-only chip
+  // First row is the CV (cv.tex) skills, second row is everything else.
   stack: [
-    ["C", "c"], ["Python", "python"], ["JavaScript", "javascript"], ["HTML5", "html5"],
-    ["Node.js", "nodejs"], ["MySQL", "mysql"], ["MongoDB", "mongodb"], ["PostgreSQL", "postgresql"],
-    ["TensorFlow", "tensorflow"], ["Git", "git"], ["Bash", "gnubash"], ["Linux", "linux"],
-    ["Ubuntu", "ubuntu"], ["VS Code", "visualstudiocode"], ["Vim", "vim"],
+    ["Python", "python"], ["Java", "java"], ["JavaScript", "javascript"], ["PyTorch", "pytorch"],
+    ["TensorFlow", "tensorflow"], ["Hugging Face", "huggingface"], ["Spring Boot", "springboot"],
+    ["Flask", "flask"], ["FastAPI", "fastapi"], ["Elasticsearch"], ["SQLite"], ["MySQL", "mysql"],
+    ["Git", "git"], ["Linux", "linux"],
+    ["C", "c"], ["HTML5", "html5"], ["Node.js", "nodejs"], ["MongoDB", "mongodb"],
+    ["PostgreSQL", "postgresql"], ["Bash", "gnubash"], ["Ubuntu", "ubuntu"],
+    ["VS Code", "visualstudiocode"], ["Vim", "vim"],
   ],
 
   // `dark` is optional; `light: true` forces a white card (for SVGs drawn on light backgrounds)
@@ -38,6 +42,40 @@ const SITE = {
   ],
 
   quote: { light: quote("light"), dark: quote("dark") },
+
+  // `repo` is the repo name under github.com/USER
+  projects: [
+    {
+      repo: "Internship-project",
+      title: "VNPhish",
+      desc: "Local-first Vietnamese phishing detection. Self-built 2,097-message dataset, Qwen3-4B (QLoRA) and PhoBERT both above 0.98 macro-F1 on a held-out set, quantized GGUF CLI that runs fully on-device.",
+      tags: ["Python", "QLoRA", "PhoBERT", "GGUF"],
+    },
+    {
+      repo: "ANSER",
+      title: "ANSER",
+      desc: "Automated retail inventory platform. Fine-tuned Qwen2.5-7B behind a hybrid RAG engine (ChromaDB + BM25 + reranking), a semantic-routing manager agent and an async FastAPI task pipeline.",
+      tags: ["Python", "FastAPI", "RAG", "QLoRA"],
+    },
+    {
+      repo: "mindguard-project",
+      title: "MindGuard",
+      desc: "Community-driven threat intelligence platform: Flask backend, SQLite index of localized fraud reports and an AI triage bot behind REST endpoints.",
+      tags: ["Python", "Flask", "SQLite"],
+    },
+    {
+      repo: "predict-future-import-for-Retail-store-products",
+      title: "Predict future imports",
+      desc: "Forecasting pipeline for retail stock: MobileNetV2 CNN for data entry plus an LSTM for demand prediction, served through a Flask REST API.",
+      tags: ["Python", "TensorFlow", "LSTM", "Flask"],
+    },
+    {
+      repo: "Mobile-dev-camstudy",
+      title: "CamStudy",
+      desc: "Android study companion: on-device YOLOv5 (TensorFlow Lite) object detection, Azure Cognitive Services translation and an offline Room (SQLite) layer.",
+      tags: ["Java", "Android", "TFLite"],
+    },
+  ],
 
   // YouTube id from the URL; `start` (seconds) is optional
   videos: [
