@@ -44,7 +44,7 @@ const SITE = {
     {
       id: "A-yt1UTzRFM",
       title: "Me & my family",
-      quote: "Myself and my family.",
+      quote: "Myself and my family.Also my first truly handmade video",
     },
     {
       id: "e4S8x04DYkg",
