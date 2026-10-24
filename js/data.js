@@ -114,6 +114,26 @@ const SITE = {
   ],
 
   // [label, url, badge image] (same badges as the README)
+  // Childhood Wix sites, shown as click-to-load mini windows. `year` is optional
+  oldSites: [
+    {
+      url: "https://dtichoai.wixsite.com/windowsxp", year: 2017, title: "Windows XP fan site",
+      quote: "Useless information about Windows XP, made by a 12-year-old kid in 2017.",
+    },
+    {
+      url: "https://dtichoai.wixsite.com/roblox", year: 2017, title: "Roblox site",
+      quote: "Can't even make a proper Roblox site in 2017.",
+    },
+    {
+      url: "https://phamtheminh2409.wixsite.com/mysite", year: 2020, title: "mysite",
+      quote: "Get rickrolled in 2020.",
+    },
+    {
+      url: "https://phamtheminh2409.wixsite.com/wikiepeidiashop", title: "wikiepeidia shop",
+      quote: "A shop that doesn't sell anything properly.",
+    },
+  ],
+
   support: [
     ["Buy me a coffee", "https://www.buymeacoffee.com/wikiepeidia", "https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"],
     ["Patreon", "https://patreon.com/wikiepeidia", "https://img.shields.io/badge/Patreon-F96854?style=for-the-badge&logo=patreon&logoColor=white"],

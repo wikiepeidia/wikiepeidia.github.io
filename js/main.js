@@ -35,15 +35,33 @@ $("stats-list").innerHTML = SITE.stats
 $("video-list").innerHTML = SITE.videos
   .map((v) => `
     <figure class="video glow">
-      <iframe src="https://www.youtube-nocookie.com/embed/${v.id}${v.start ? `?start=${v.start}` : ""}"
-        title="${v.title}" loading="lazy" allowfullscreen
-        allow="encrypted-media; picture-in-picture; fullscreen"
-        referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      <button class="play" aria-label="Play video: ${v.title}" data-title="${v.title}"
+        data-src="https://www.youtube-nocookie.com/embed/${v.id}?autoplay=1${v.start ? `&start=${v.start}` : ""}">
+        <img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="" loading="lazy">
+      </button>
       <figcaption>
         <h3><a href="https://youtu.be/${v.id}${v.start ? `?t=${v.start}` : ""}" target="_blank" rel="noreferrer">${v.title}</a></h3>
         <blockquote>${v.quote}</blockquote>
       </figcaption>
     </figure>`)
+  .join("");
+
+$("site-list").innerHTML = SITE.oldSites
+  .map((s) => `
+    <article class="xp">
+      <div class="xp-bar"><span>${s.title} - Internet Explorer</span><i aria-hidden="true">✕</i></div>
+      <div class="xp-screen">
+        <button class="xp-load" data-src="${s.url}" data-title="${s.title}" data-class="site-frame"
+          data-sandbox="allow-scripts allow-same-origin allow-popups allow-forms">
+          <span>▶ Load this masterpiece</span>
+          <small>${s.url.replace("https://", "")}</small>
+        </button>
+      </div>
+      <div class="xp-foot">
+        <blockquote>${s.quote}</blockquote>
+        <p>${s.year ? `<span>${s.year}</span>` : ""}<a href="${s.url}" target="_blank" rel="noreferrer">Open in new tab ↗</a></p>
+      </div>
+    </article>`)
   .join("");
 
 $("quote").insertAdjacentHTML("beforeend", picture(SITE.quote.light, SITE.quote.dark, "Random quote"));
@@ -65,11 +83,33 @@ const revealer = new IntersectionObserver((entries) => entries.forEach((e) => {
   e.target.classList.add("in");
   revealer.unobserve(e.target);
 }), { threshold: 0.12 });
-document.querySelectorAll("section h2, dl, #quote picture, .chips li, .project, .card, .video, .links li").forEach((el) => {
+document.querySelectorAll("section h2, dl, #quote picture, .chips li, .project, .card, .video, .xp, .links li").forEach((el) => {
   el.dataset.reveal = "";
   el.style.setProperty("--i", Math.min([...el.parentNode.children].indexOf(el), 10));
   revealer.observe(el);
 });
+
+// Click-to-load embeds: the [data-src] button is swapped for the real iframe, so YouTube
+// and the (heavy) Wix pages cost nothing until someone actually wants them
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-src]");
+  if (!btn) return;
+  const frame = document.createElement("iframe");
+  frame.src = btn.dataset.src;
+  frame.title = btn.dataset.title;
+  frame.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+  frame.allowFullscreen = true;
+  frame.referrerPolicy = "strict-origin-when-cross-origin";
+  if (btn.dataset.class) frame.className = btn.dataset.class;
+  if (btn.dataset.sandbox) frame.setAttribute("sandbox", btn.dataset.sandbox); // no top-window redirects
+  btn.replaceWith(frame);
+  frame.focus();
+});
+
+// Wix pages are desktop-only, so render them at 1280px and scale down to the card (CSS: --s)
+const fit = new ResizeObserver((entries) => entries.forEach((e) =>
+  e.target.style.setProperty("--s", e.contentRect.width / 1280)));
+document.querySelectorAll(".xp-screen").forEach((el) => fit.observe(el));
 
 // Cursor-following glow on .glow cards
 document.addEventListener("pointermove", (e) => {
