@@ -9,17 +9,57 @@
 <meta name="theme-color" content="#0f1012" media="(prefers-color-scheme: dark)">
 <link rel="icon" type="image/png" href="assets/avatar.png">
 <link rel="stylesheet" href="css/style.css">
+<script>document.documentElement.classList.add("js")</script>
 </head>
 <body>
-<main>
+<div class="progress" aria-hidden="true"></div>
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="#"><img src="assets/avatar.png" alt="" width="32" height="32">wikiepeidia</a>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#stack">Stack</a></li>
+      <li><a href="#projects">Repos</a></li>
+      <li><a href="#activity">Activity</a></li>
+      <li><a href="#videos">Videos</a></li>
+      <li><a href="#find-me">Contact</a></li>
+    </ul>
+    <a class="btn primary" href="mailto:phamtheminh2409@gmail.com">Email me</a>
+  </div>
+</nav>
+
+<main class="wrap">
   <header class="hero">
-    <p class="eyebrow">~/wikiepeidia<span class="cursor" aria-hidden="true"></span></p>
-    <h1>Hi there 👋<br>I'm <em>wikiepeidia</em>.</h1>
-    <p class="lead">An <strong>AI Engineer &amp; Backend Developer</strong>: ICT student at USTH, backend developer at <strong>FPT Software</strong>. Based in Việt Nam, building LLM and backend systems.</p>
-    <div class="actions">
-      <a class="btn primary" href="mailto:phamtheminh2409@gmail.com">Email me</a>
-      <a class="btn" href="https://www.github.com/wikiepeidia" target="_blank" rel="noreferrer">GitHub</a>
+    <span class="blob a" aria-hidden="true"></span>
+    <span class="blob b" aria-hidden="true"></span>
+    <div class="hero-text">
+      <p class="eyebrow" style="--i:0">~/wikiepeidia<span class="cursor" aria-hidden="true"></span></p>
+      <h1 style="--i:1">Hi there <span class="wave">👋</span><br>I'm <em>wikiepeidia</em>.</h1>
+      <p class="lead" style="--i:2">An <strong>AI Engineer &amp; Backend Developer</strong>: ICT student at USTH, backend developer at <strong>FPT Software</strong>. Based in Việt Nam, building LLM and backend systems.</p>
+      <div class="actions" style="--i:3">
+        <a class="btn primary" href="mailto:phamtheminh2409@gmail.com">Email me</a>
+        <a class="btn" href="https://www.github.com/wikiepeidia" target="_blank" rel="noreferrer">GitHub</a>
+        <a class="btn ghost" href="#projects">See my repos ↓</a>
+      </div>
     </div>
+    <div class="term-wrap" aria-hidden="true">
+      <img class="avatar" src="assets/avatar.png" alt="" width="150" height="150">
+      <div class="term">
+        <div class="term-bar"><i></i><i></i><i></i><span>minh@wikiepeidia: ~</span></div>
+        <div class="term-body">
+          <p class="cmd">whoami</p>
+          <p class="out">Pham The Minh, aka wikiepeidia</p>
+          <p class="cmd">cat role.txt</p>
+          <p class="out">AI Engineer &amp; Backend Developer @ FPT Software</p>
+          <p class="cmd">ls ~/projects</p>
+          <p class="out">VNPhish  ANSER  MindGuard  CamStudy</p>
+          <p class="cmd">echo $STATUS</p>
+          <p class="out hi">open to collaborate ✦</p>
+          <p class="cmd caret"></p>
+        </div>
+      </div>
+    </div>
+    <a class="scroll-cue" href="#about">scroll ↓</a>
   </header>
 
   <section id="about">
@@ -70,7 +110,9 @@
     <ul class="links" id="support-list"></ul>
   </section>
 </main>
-<footer>wikiepeidia · Việt Nam</footer>
+<footer>
+  <div class="wrap"><span>wikiepeidia · Việt Nam</span><a href="#">back to top ↑</a></div>
+</footer>
 
 <script src="js/data.js"></script>
 <script src="js/main.js"></script>
